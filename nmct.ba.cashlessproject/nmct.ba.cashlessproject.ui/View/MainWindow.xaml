@@ -3,32 +3,36 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:v="clr-namespace:nmct.ba.cashlessproject.ui.View"
         xmlns:vm="clr-namespace:nmct.ba.cashlessproject.ui.ViewModel"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Cashless Payment" Width="800" Height="600">
     <Window.DataContext>
         <vm:ApplicationVM/>
     </Window.DataContext>
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:HomeVM}">
-            <v:Home/>
+        <DataTemplate DataType="{x:Type vm:LoginVM}">
+            <v:Login/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ManagementProductsVM}">
+            <v:ManagementProducts/>
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <!-- 
         <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
-        -->
-
-        <!--
         <ItemsControl ItemsSource="{Binding Pages}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Content="{Binding Name}" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-         -->
+        
         <ContentControl Grid.Row="1" Content="{Binding CurrentPage}"/>
     </Grid>
 </Window>

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace nmct.ba.cashlessproject.ui.View
 {
     /// <summary>
-    /// Interaction logic for Home.xaml
+    /// Interaction logic for ManagementProducts.xaml
     /// </summary>
-    public partial class Home : UserControl
+    public partial class ManagementProducts : UserControl
     {
-        public Home()
+        public ManagementProducts()
         {
             InitializeComponent();
         }

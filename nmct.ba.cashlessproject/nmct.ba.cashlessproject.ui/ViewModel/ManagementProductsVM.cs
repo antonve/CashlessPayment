@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace nmct.ba.cashlessproject.ui.ViewModel
 {
-    class HomeVM : ObservableObject, IPage
+    class ManagementProductsVM : ObservableObject, IPage
     {
-        public HomeVM()
+        public ManagementProductsVM()
         {
+
         }
 
         public string Name
         {
-            get { return "Home"; }
+            get { return "Products"; }
         }
     }
 }
