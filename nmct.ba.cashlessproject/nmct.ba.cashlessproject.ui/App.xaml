@@ -6,25 +6,24 @@
 
         <Thickness x:Key="CommonMargin" Left="5" Right="5" Top="5" Bottom="5" />
 
-        <Style TargetType="TextBox">
+        <Style x:Key="DefaultMargin" TargetType="FrameworkElement">
             <Setter Property="Margin" Value="{StaticResource CommonMargin}" />
+        </Style>
+
+        <Style TargetType="TextBox" BasedOn="{StaticResource DefaultMargin}">
             <Setter Property="Padding" Value="5" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
-        <Style TargetType="PasswordBox">
-            <Setter Property="Margin" Value="{StaticResource CommonMargin}" />
+        <Style TargetType="PasswordBox" BasedOn="{StaticResource DefaultMargin}">
             <Setter Property="Padding" Value="5" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
-        <Style TargetType="TextBlock">
-            <Setter Property="Margin" Value="{StaticResource CommonMargin}" />
+        <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultMargin}">
         </Style>
-        <Style TargetType="Button">
-            <Setter Property="Margin" Value="{StaticResource CommonMargin}" />
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultMargin}">
             <Setter Property="Padding" Value="15 0" />
         </Style>
-        <Style TargetType="ListBox">
-            <Setter Property="Margin" Value="{StaticResource CommonMargin}" />
+        <Style TargetType="ListBox" BasedOn="{StaticResource DefaultMargin}">
         </Style>
     </Application.Resources>
 </Application>
