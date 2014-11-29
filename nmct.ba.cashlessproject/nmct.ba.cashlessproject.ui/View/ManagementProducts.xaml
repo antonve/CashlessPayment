@@ -3,14 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:nmct.ba.cashlessproject.ui.ViewModel"
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vm:ManagementProductsVM />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <Style x:Key="IsEnabledCurrentProduct" TargetType="FrameworkElement" BasedOn="{StaticResource DefaultMargin}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentProduct}" Value="{x:Null}">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="IsEnabledCurrentProductForButton" TargetType="Button" BasedOn="{StaticResource IsEnabledCurrentProduct}">
+            <Setter Property="Padding" Value="15 0" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <ListBox Grid.Column="0" x:Name="lstProducts"/>
+        <ListBox Grid.Column="0" ItemsSource="{Binding Products}" DisplayMemberPath="ProductName" SelectedItem="{Binding CurrentProduct}" />
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="45" />
@@ -25,26 +43,37 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" x:Name="btnNew">New</Button>
-                <Button Grid.Column="1" x:Name="btnEdit">Edit</Button>
-                <Button Grid.Column="2" x:Name="btnDelete">Delete</Button>
+                <Button Grid.Column="0" x:Name="btnNew" Command="{Binding NewProductCommand}">New</Button>
+                <Button Grid.Column="1" Style="{StaticResource IsEnabledCurrentProductForButton}">Edit</Button>
+                <Button Grid.Column="2" Style="{StaticResource IsEnabledCurrentProductForButton}">Delete</Button>
             </Grid>
 
-            <StackPanel Grid.Row="1" x:Name="stpForm">
+            <StackPanel Grid.Row="1" Style="{StaticResource IsEnabledCurrentProduct}">
                 <TextBlock>Product name</TextBlock>
-                <TextBox x:Name="txbName"></TextBox>
+                <TextBox x:Name="txbName" Text="{Binding CurrentProduct.ProductName}" />
                 <TextBlock>Price</TextBlock>
-                <TextBox x:Name="txbPrice"></TextBox>
+                <TextBox x:Name="txbPrice" Text="{Binding CurrentProduct.Price}" />
             </StackPanel>
 
-            <Grid Grid.Row="2" x:Name="grdFormControls">
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" x:Name="btnSave">Save</Button>
-                <Button Grid.Column="1" x:Name="btnCancel">Cancel</Button>
+                <Button 
+                    Grid.Column="0" 
+                    x:Name="btnSave" 
+                    Style="{StaticResource IsEnabledCurrentProductForButton}"
+                    Command="{Binding SaveProductCommand}">
+                    Save
+                </Button>
+                <Button 
+                    Grid.Column="1" 
+                    x:Name="btnCancel" 
+                    Style="{StaticResource IsEnabledCurrentProductForButton}">
+                    Cancel
+                </Button>
             </Grid>
         </Grid>
     </Grid>
