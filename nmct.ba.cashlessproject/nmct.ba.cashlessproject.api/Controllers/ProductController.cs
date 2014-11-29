@@ -24,13 +24,15 @@ namespace nmct.ba.cashlessproject.api.Controllers
         }
 
         // POST: api/product
-        public void Post([FromBody]string value)
+        public int Post([FromBody]Product p)
         {
+            return ProductDA.SaveProduct(p);
         }
 
         // PUT: api/product/5
-        public void Put(int id, [FromBody]string value)
+        public int Put(int id, [FromBody]Product p)
         {
+            return ProductDA.UpdateProduct(p);
         }
 
         // DELETE: api/product/5
