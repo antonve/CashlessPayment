@@ -84,6 +84,7 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
         {
             using (HttpClient client = new HttpClient())
             {
+                client.SetBearerToken(ApplicationVM.token.AccessToken);
                 HttpResponseMessage response = await client.GetAsync("http://localhost:46080/api/product");
                 if (response.IsSuccessStatusCode)
                 {
@@ -131,6 +132,7 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
 
                 if (MessageBox.Show("Are you sure you want to delete this product?", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
+                    client.SetBearerToken(ApplicationVM.token.AccessToken);
                     response = await client.DeleteAsync("http://localhost:46080/api/product/" + CurrentProduct.ID.ToString());
                     
                     if (response.IsSuccessStatusCode)
@@ -193,6 +195,7 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
             {
                 string json = JsonConvert.SerializeObject(CurrentProduct);
                 HttpResponseMessage response;
+                client.SetBearerToken(ApplicationVM.token.AccessToken);
 
                 if (SaveMode)
                 {

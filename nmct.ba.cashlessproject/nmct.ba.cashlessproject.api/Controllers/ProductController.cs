@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
 
 namespace nmct.ba.cashlessproject.api.Controllers
@@ -14,7 +15,8 @@ namespace nmct.ba.cashlessproject.api.Controllers
         // GET: api/product
         public List<Product> Get()
         {
-            return ProductDA.GetProducts();
+            ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
+            return ProductDA.GetProducts(p.Claims);
         }
 
         // GET: api/product/5

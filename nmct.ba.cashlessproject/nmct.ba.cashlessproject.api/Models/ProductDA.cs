@@ -2,28 +2,39 @@
 using nmct.ba.cashlessproject.model;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Web;
+using System.Configuration;
 
 namespace nmct.ba.cashlessproject.api.Models
 {
     public class ProductDA
     {
-        public static List<Product> GetProducts()
+        private static ConnectionStringSettings CreateConnectionString(IEnumerable<Claim> claims)
+        {
+            string dblogin = claims.FirstOrDefault(c => c.Type == "dblogin").Value;
+            string dbpass = claims.FirstOrDefault(c => c.Type == "dbpass").Value;
+            string dbname = claims.FirstOrDefault(c => c.Type == "dbname").Value;
+
+            return Database.CreateConnectionString("System.Data.SqlClient", @"IKORE\SQLEXPRESS", Cryptography.Decrypt(dbname), Cryptography.Decrypt(dblogin), Cryptography.Decrypt(dbpass));
+        }
+
+        public static List<Product> GetProducts(IEnumerable<Claim> claims)
         {
             List<Product> list = new List<Product>();
-
+            
             string sql = "SELECT ID, ProductName, Price FROM Products";
-            DbDataReader reader = Database.GetData("ConnectionString", sql);
+            DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql);
 
             while (reader.Read())
             {
                 list.Add(Create(reader));
             }
             reader.Close();
-
+            
             return list;
         }
 

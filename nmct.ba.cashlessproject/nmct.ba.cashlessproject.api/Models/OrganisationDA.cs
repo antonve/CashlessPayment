@@ -13,6 +13,7 @@ namespace nmct.ba.cashlessproject.api.Models
         public static Organisation CheckCredentials(string username, string password)
         {
             string sql = "SELECT * FROM Organisation WHERE Login=@Login AND Password=@Password";
+
             DbParameter par1 = Database.AddParameter("AdminDB", "@Login", Cryptography.Encrypt(username));
             DbParameter par2 = Database.AddParameter("AdminDB", "@Password", Cryptography.Encrypt(password));
             try

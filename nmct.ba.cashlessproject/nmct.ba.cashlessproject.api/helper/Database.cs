@@ -8,36 +8,27 @@ using System.Web;
 
 namespace nmct.ba.cashlessproject.api.helper
 {
+
     class Database
     {
-        //public static ConnectionStringSettings CreateConnectionString(string provider, string server, string database, string username, string password)
-        //{
-        //    ConnectionStringSettings settings = new ConnectionStringSettings();
-        //    settings.ProviderName = provider;
-        //    settings.ConnectionString = "Data Source=" + server + ";Initial Catalog=" + database + ";User ID=" + username + ";Password=" + password;
-        //    return settings;
-        //}
+        public static ConnectionStringSettings CreateConnectionString(string provider, string server, string database, string username, string password)
+        {
+            ConnectionStringSettings settings = new ConnectionStringSettings();
+            settings.ProviderName = provider;
+            settings.ConnectionString = "Data Source=" + server + ";Initial Catalog=" + database + ";User ID=" + username + ";Password=" + password;
+            return settings;
+        }
 
-        //public static DbConnection GetConnection(string ConnectionString)
-        //{
-        //    ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[ConnectionString];
-        //    return GetConnection(settings);
-        //}
-
-        //public static DbConnection GetConnection(ConnectionStringSettings Settings)
-        //{
-        //    DbConnection con = DbProviderFactories.GetFactory(Settings.ProviderName).CreateConnection();
-        //    con.ConnectionString = Settings.ConnectionString;
-        //    con.Open();
-
-        //    return con;
-        //}
-
-        private static DbConnection GetConnection(string ConnectionString)
+        public static DbConnection GetConnection(string ConnectionString)
         {
             ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[ConnectionString];
-            DbConnection con = DbProviderFactories.GetFactory(settings.ProviderName).CreateConnection();
-            con.ConnectionString = settings.ConnectionString;
+            return GetConnection(settings);
+        }
+
+        public static DbConnection GetConnection(ConnectionStringSettings Settings)
+        {
+            DbConnection con = DbProviderFactories.GetFactory(Settings.ProviderName).CreateConnection();
+            con.ConnectionString = Settings.ConnectionString;
             con.Open();
 
             return con;
@@ -52,9 +43,9 @@ namespace nmct.ba.cashlessproject.api.helper
             }
         }
 
-        private static DbCommand BuildCommand(string ConnectionString, string sql, params DbParameter[] parameters)
+        private static DbCommand BuildCommand(DbConnection con, string sql, params DbParameter[] parameters)
         {
-            DbCommand command = GetConnection(ConnectionString).CreateCommand();
+            DbCommand command = con.CreateCommand();
             command.CommandType = CommandType.Text;
             command.CommandText = sql;
 
@@ -66,14 +57,14 @@ namespace nmct.ba.cashlessproject.api.helper
             return command;
         }
 
-        public static DbDataReader GetData(string ConnectionString, string sql, params DbParameter[] parameters)
+        public static DbDataReader GetData(DbConnection con, string sql, params DbParameter[] parameters)
         {
             DbCommand command = null;
             DbDataReader reader = null;
 
             try
             {
-                command = BuildCommand(ConnectionString, sql, parameters);
+                command = BuildCommand(con, sql, parameters);
                 reader = command.ExecuteReader(CommandBehavior.CloseConnection);
 
                 return reader;
@@ -89,12 +80,12 @@ namespace nmct.ba.cashlessproject.api.helper
             }
         }
 
-        public static int ModifyData(string ConnectionString, string sql, params DbParameter[] parameters)
+        public static int ModifyData(DbConnection con, string sql, params DbParameter[] parameters)
         {
             DbCommand command = null;
             try
             {
-                command = BuildCommand(ConnectionString, sql, parameters);
+                command = BuildCommand(con, sql, parameters);
                 int affected = command.ExecuteNonQuery();
                 command.Connection.Close();
 
@@ -109,12 +100,12 @@ namespace nmct.ba.cashlessproject.api.helper
             }
         }
 
-        public static int InsertData(string ConnectionString, string sql, params DbParameter[] parameters)
+        public static int InsertData(DbConnection con, string sql, params DbParameter[] parameters)
         {
             DbCommand command = null;
             try
             {
-                command = BuildCommand(ConnectionString, sql, parameters);
+                command = BuildCommand(con, sql, parameters);
                 command.ExecuteNonQuery();
 
                 command.Parameters.Clear();
@@ -134,7 +125,6 @@ namespace nmct.ba.cashlessproject.api.helper
             }
         }
 
-
         public static DbParameter AddParameter(string ConnectionString, string name, object value)
         {
             ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[ConnectionString];
@@ -151,6 +141,22 @@ namespace nmct.ba.cashlessproject.api.helper
             try
             {
                 con = GetConnection(ConnectionString);
+                return con.BeginTransaction();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                ReleaseConnection(con);
+                throw;
+            }
+        }
+
+        public static DbTransaction BeginTransaction(ConnectionStringSettings Setting)
+        {
+            DbConnection con = null;
+            try
+            {
+                con = GetConnection(Setting);
                 return con.BeginTransaction();
             }
             catch (Exception ex)

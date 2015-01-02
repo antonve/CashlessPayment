@@ -15,6 +15,7 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
     {
         public LoginVM()
         {
+            Username = "anton";
         }
 
         public string Name
@@ -50,11 +51,12 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
 
             if (!ApplicationVM.token.IsError)
             {
-                Error = "success";
+                Error = null;
+                appvm.Login(Username);
             }
             else
             {
-                Error = "Gebruikersnaam of paswoord kloppen niet";
+                Error = "Login incorrect.";
             }
         }
 
