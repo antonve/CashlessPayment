@@ -17,6 +17,7 @@
             <RowDefinition Height="45"/>
             <RowDefinition Height="45"/>
             <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -29,8 +30,10 @@
         <TextBlock Grid.Column="1" Grid.Row="1">Username</TextBlock>
         <TextBlock Grid.Column="1" Grid.Row="2">Password</TextBlock>
 
-        <TextBox Grid.Row="1" Grid.Column="2" x:Name="txbUsername" />
-        <PasswordBox Grid.Row="2" Grid.Column="2" x:Name="txbPassword" />
-        <Button Grid.Row="3" Grid.Column="2" x:Name="btnLogin">Login</Button>
+        <TextBox Grid.Row="1" Grid.Column="2" x:Name="txbUsername" Text="{Binding Username}" />
+        <PasswordBox Grid.Row="2" Grid.Column="2" x:Name="psbPassword" />
+        <Button Grid.Row="3" Grid.Column="2" x:Name="btnLogin" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=psbPassword}">Login</Button>
+
+        <TextBlock Grid.Row="4" Grid.Column="2" x:Name="Error" Text="{Binding Error}" />
     </Grid>
 </UserControl>

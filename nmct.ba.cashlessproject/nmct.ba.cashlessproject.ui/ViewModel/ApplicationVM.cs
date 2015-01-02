@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Thinktecture.IdentityModel.Client;
 
 namespace nmct.ba.cashlessproject.ui.ViewModel
 {
     class ApplicationVM : ObservableObject
     {
+        public static TokenResponse token = null;
+
         public ApplicationVM()
         {
             //Pages.Add(new ManagementProductsVM());

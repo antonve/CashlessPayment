@@ -43,10 +43,6 @@
             </Style.Triggers>
             <Setter Property="IsEnabled" Value="False" />
         </Style>
-        
-        <Style x:Key="IsEnabledCurrentProductForButton" TargetType="Button" BasedOn="{StaticResource IsEnabledCurrentProduct}">
-            <Setter Property="Padding" Value="15 0" />
-        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

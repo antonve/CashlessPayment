@@ -35,11 +35,10 @@ namespace nmct.ba.cashlessproject.api
             PublicClientId = "self";
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
-                TokenEndpointPath = new PathString("/Token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId),
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-                AllowInsecureHttp = true
+                AllowInsecureHttp = true,
+                TokenEndpointPath = new PathString("/token"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromHours(8),
+                Provider = new SimpleAuthorizationServerProvider()
             };
 
             // Enable the application to use bearer tokens to authenticate users
