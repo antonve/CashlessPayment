@@ -36,8 +36,9 @@ namespace nmct.ba.cashlessproject.api.Controllers
         }
 
         // DELETE: api/product/5
-        public void Delete(int id)
+        public int Delete(int id)
         {
+            return ProductDA.DeleteProduct(id);
         }
     }
 }

@@ -68,6 +68,35 @@ namespace nmct.ba.cashlessproject.api.Models
             return rowsaffected;
         }
 
+        public static int DeleteProduct(int id)
+        {
+            int rowsaffected = 0;
+            DbTransaction trans = null;
+
+            try
+            {
+                trans = Database.BeginTransaction("ConnectionString");
+
+                string sql = "DELETE FROM Products WHERE ID = @ID";
+                DbParameter par1 = Database.AddParameter("ConnectionString", "@ID", id);
+                rowsaffected += Database.ModifyData(trans, sql, par1);
+
+                trans.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (trans != null)
+                    trans.Rollback();
+            }
+            finally
+            {
+                if (trans != null)
+                    Database.ReleaseConnection(trans.Connection);
+            }
+
+            return rowsaffected;
+        }
+
         public static int SaveProduct(Product p)
         {
             int rowsaffected = 0;

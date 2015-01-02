@@ -12,7 +12,7 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
     {
         public ApplicationVM()
         {
-            Pages.Add(new ManagementProductsVM());
+            //Pages.Add(new ManagementProductsVM());
             Pages.Add(new LoginVM());
             // Add other pages
 

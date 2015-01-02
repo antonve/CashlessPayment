@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows;
 
 namespace nmct.ba.cashlessproject.ui.ViewModel
 {
@@ -24,11 +25,52 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
             get { return "Products"; }
         }
 
+        private bool _isFormEnabled = false;
+        public bool IsFormEnabled
+        {
+            get { return _isFormEnabled; }
+            set { _isFormEnabled = value; OnPropertyChanged("IsFormEnabled"); }
+        }
+
+        private bool _isEditEnabled = false;
+        public bool IsEditEnabled
+        {
+            get { return _isEditEnabled; }
+            set { _isEditEnabled = value; OnPropertyChanged("IsEditEnabled"); }
+        }
+
+
+        private bool _isDeleteEnabled = false;
+        public bool IsDeleteEnabled
+        {
+            get { return _isDeleteEnabled; }
+            set { _isDeleteEnabled = value; OnPropertyChanged("IsDeleteEnabled"); }
+        }
+
         private Product currentProduct;
         public Product CurrentProduct
         {
             get { return currentProduct; }
-            set { currentProduct = value; SaveMode = true;  OnPropertyChanged("CurrentProduct"); }
+            set
+            { 
+                currentProduct = value;
+                IsFormEnabled = false;
+                if (currentProduct == null)
+                {
+                    IsEditEnabled = false;
+                    IsDeleteEnabled = false;
+                }
+                else
+                {
+                    if (SaveMode != true)
+                    {
+                        IsDeleteEnabled = true;
+                    }
+                    IsEditEnabled = true;
+                }
+                SaveMode = false; 
+                OnPropertyChanged("CurrentProduct"); 
+            }
         }
 
         private ObservableCollection<Product> _products;
@@ -59,7 +101,63 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
         private void NewProduct()
         {
             CurrentProduct = new Product();
+            SaveMode = true;
+            IsFormEnabled = true;
+            IsEditEnabled = false;
+            IsDeleteEnabled = false;
+        }
+
+        public ICommand EditProductCommand
+        {
+            get { return new RelayCommand(EditProduct); }
+        }
+
+        private void EditProduct()
+        {
+            IsFormEnabled = true;
+            IsEditEnabled = false;
+        }
+
+        public ICommand DeleteProductCommand
+        {
+            get { return new RelayCommand(DeleteProduct); }
+        }
+
+        private async void DeleteProduct()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response;
+
+                if (MessageBox.Show("Are you sure you want to delete this product?", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    response = await client.DeleteAsync("http://localhost:46080/api/product/" + CurrentProduct.ID.ToString());
+                    
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string jsonresponse = await response.Content.ReadAsStringAsync();
+                        int result = JsonConvert.DeserializeObject<int>(jsonresponse);
+
+                        if (result == 1)
+                        {
+                            GetProducts();
+                            CurrentProduct = null;
+                        }
+                    }
+                }
+            }
+        }
+
+        public ICommand CancelProductCommand
+        {
+            get { return new RelayCommand(CancelProduct); }
+        }
+
+        private void CancelProduct()
+        {
             SaveMode = false;
+            CurrentProduct = null;
+            IsFormEnabled = false;
         }
 
         public ICommand SaveProductCommand
@@ -67,8 +165,27 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
             get { return new RelayCommand(SaveProduct); }
         }
 
-        // false = save, true = update
-        private bool SaveMode = false;
+        // false = update, true = save
+        public bool SaveMode
+        {
+            get 
+            {
+                if (CurrentProduct == null)
+                {
+                    return false;
+                }
+
+                return CurrentProduct.isNew; 
+            }
+            set
+            {
+                if (CurrentProduct != null) 
+                {
+                    CurrentProduct.isNew = value; 
+                    OnPropertyChanged("SaveMode");
+                }
+            }
+        }
 
         private async void SaveProduct()
         {
@@ -79,11 +196,11 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
 
                 if (SaveMode)
                 {
-                    response = await client.PutAsync("http://localhost:46080/api/product/" + CurrentProduct.ID.ToString(), new StringContent(json, Encoding.UTF8, "application/json"));
+                    response = await client.PostAsync("http://localhost:46080/api/product", new StringContent(json, Encoding.UTF8, "application/json"));
                 }
                 else
                 {
-                    response = await client.PostAsync("http://localhost:46080/api/product", new StringContent(json, Encoding.UTF8, "application/json"));
+                    response = await client.PutAsync("http://localhost:46080/api/product/" + CurrentProduct.ID.ToString(), new StringContent(json, Encoding.UTF8, "application/json"));
                 }
 
                 if (response.IsSuccessStatusCode)
