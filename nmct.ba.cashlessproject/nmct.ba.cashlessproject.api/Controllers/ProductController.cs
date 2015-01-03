@@ -19,28 +19,25 @@ namespace nmct.ba.cashlessproject.api.Controllers
             return ProductDA.GetProducts(p.Claims);
         }
 
-        // GET: api/product/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST: api/product
-        public int Post([FromBody]Product p)
+        public int Post([FromBody]Product prod)
         {
-            return ProductDA.SaveProduct(p);
+            ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
+            return ProductDA.SaveProduct(prod, p.Claims);
         }
 
         // PUT: api/product/5
-        public int Put(int id, [FromBody]Product p)
+        public int Put(int id, [FromBody]Product prod)
         {
-            return ProductDA.UpdateProduct(p);
+            ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
+            return ProductDA.UpdateProduct(prod, p.Claims);
         }
 
         // DELETE: api/product/5
         public int Delete(int id)
         {
-            return ProductDA.DeleteProduct(id);
+            ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
+            return ProductDA.DeleteProduct(id, p.Claims);
         }
     }
 }

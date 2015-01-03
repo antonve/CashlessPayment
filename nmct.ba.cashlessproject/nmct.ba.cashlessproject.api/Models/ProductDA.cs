@@ -48,14 +48,14 @@ namespace nmct.ba.cashlessproject.api.Models
             };
         }
 
-        public static int UpdateProduct(Product p)
+        public static int UpdateProduct(Product p, IEnumerable<Claim> claims)
         {
             int rowsaffected = 0;
             DbTransaction trans = null;
 
             try
             {
-                trans = Database.BeginTransaction("ConnectionString");
+                trans = Database.BeginTransaction(CreateConnectionString(claims));
 
                 string sql = "UPDATE Products SET ProductName = @ProductName, Price = @Price WHERE ID = @ID";
                 DbParameter par1 = Database.AddParameter("ConnectionString", "@ProductName", p.ProductName);
@@ -65,7 +65,7 @@ namespace nmct.ba.cashlessproject.api.Models
 
                 trans.Commit();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (trans != null)
                     trans.Rollback();
@@ -79,14 +79,14 @@ namespace nmct.ba.cashlessproject.api.Models
             return rowsaffected;
         }
 
-        public static int DeleteProduct(int id)
+        public static int DeleteProduct(int id, IEnumerable<Claim> claims)
         {
             int rowsaffected = 0;
             DbTransaction trans = null;
 
             try
             {
-                trans = Database.BeginTransaction("ConnectionString");
+                trans = Database.BeginTransaction(CreateConnectionString(claims));
 
                 string sql = "DELETE FROM Products WHERE ID = @ID";
                 DbParameter par1 = Database.AddParameter("ConnectionString", "@ID", id);
@@ -94,7 +94,7 @@ namespace nmct.ba.cashlessproject.api.Models
 
                 trans.Commit();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (trans != null)
                     trans.Rollback();
@@ -108,14 +108,14 @@ namespace nmct.ba.cashlessproject.api.Models
             return rowsaffected;
         }
 
-        public static int SaveProduct(Product p)
+        public static int SaveProduct(Product p, IEnumerable<Claim> claims)
         {
             int rowsaffected = 0;
             DbTransaction trans = null;
 
             try
             {
-                trans = Database.BeginTransaction("ConnectionString");
+                trans = Database.BeginTransaction(CreateConnectionString(claims));
 
                 string sql = "INSERT INTO Products (ProductName, Price) VALUES(@ProductName, @Price)";
                 DbParameter par1 = Database.AddParameter("ConnectionString", "@ProductName", p.ProductName);
