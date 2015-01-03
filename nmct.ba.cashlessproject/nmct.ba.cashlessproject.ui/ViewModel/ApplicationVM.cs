@@ -59,6 +59,7 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
         public void Login(string username)
         {
             Pages.RemoveAt(0);
+            Pages.Add(new AccountVM());
             Pages.Add(new ManagementProductsVM());
             CurrentPage = Pages[0];
             AppTitle = String.Format("Cashless Payment (logged in as {0})", username);

@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="nmct.ba.cashlessproject.ui.View.Account"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:c="clr-namespace:nmct.ba.cashlessproject.ui.View.converters"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <c:MultiPasswordConverter x:Key="MultiPasswordConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Column="0" Grid.Row="0" Content="Logout" />
+
+        <TextBlock Grid.Column="0" Grid.Row="1">New password</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="2">Repeat new password</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="3">Old password</TextBlock>
+
+        <PasswordBox Grid.Column="1" Grid.Row="1" x:Name="psbPassword1">
+            <PasswordBox.InputBindings>
+                <KeyBinding Command="{Binding ChangePasswordCommand}" Key="Return">
+                    <KeyBinding.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultiPasswordConverter}">
+                            <Binding ElementName="psbPassword1"/>
+                            <Binding ElementName="psbPassword2"/>
+                            <Binding ElementName="psbNewPassword"/>
+                        </MultiBinding>
+                    </KeyBinding.CommandParameter>
+                </KeyBinding>
+            </PasswordBox.InputBindings>
+        </PasswordBox>
+
+        <PasswordBox Grid.Column="1" Grid.Row="2" x:Name="psbPassword2">
+            <PasswordBox.InputBindings>
+                <KeyBinding Command="{Binding ChangePasswordCommand}" Key="Return">
+                    <KeyBinding.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultiPasswordConverter}">
+                            <Binding ElementName="psbPassword1"/>
+                            <Binding ElementName="psbPassword2"/>
+                            <Binding ElementName="psbNewPassword"/>
+                        </MultiBinding>
+                    </KeyBinding.CommandParameter>
+                </KeyBinding>
+            </PasswordBox.InputBindings>
+        </PasswordBox>
+
+        <PasswordBox Grid.Column="1" Grid.Row="3" x:Name="psbNewPassword">
+            <PasswordBox.InputBindings>
+                <KeyBinding Command="{Binding ChangePasswordCommand}" Key="Return">
+                    <KeyBinding.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultiPasswordConverter}">
+                            <Binding ElementName="psbPassword1"/>
+                            <Binding ElementName="psbPassword2"/>
+                            <Binding ElementName="psbNewPassword"/>
+                        </MultiBinding>
+                    </KeyBinding.CommandParameter>
+                </KeyBinding>
+            </PasswordBox.InputBindings>
+        </PasswordBox>
+            
+        <Button Grid.Column="1" Grid.Row="4" Command="{Binding ChangePasswordCommand}">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource MultiPasswordConverter}">
+                    <Binding ElementName="psbPassword1"/>
+                    <Binding ElementName="psbPassword2"/>
+                    <Binding ElementName="psbNewPassword"/>
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
+    </Grid>
+</UserControl>

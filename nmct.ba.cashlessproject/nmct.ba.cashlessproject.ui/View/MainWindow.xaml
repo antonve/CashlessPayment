@@ -11,6 +11,9 @@
         <DataTemplate DataType="{x:Type vm:LoginVM}">
             <v:Login/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AccountVM}">
+            <v:Account/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:ManagementProductsVM}">
             <v:ManagementProducts/>
         </DataTemplate>
