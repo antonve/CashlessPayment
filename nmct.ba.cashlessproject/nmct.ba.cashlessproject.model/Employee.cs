@@ -8,16 +8,23 @@ using System.Threading.Tasks;
 
 namespace nmct.ba.cashlessproject.model
 {
-    public class Product : IDataErrorInfo
+    public class Employee : IDataErrorInfo
     {
         public int ID { get; set; }
 
-        [Required(ErrorMessage = "The product name is required.")]
-        [StringLength(50, MinimumLength = 1, ErrorMessage = "The product name must be between 1 and 50 characters long.")]
-        public string ProductName { get; set; }
+        [Required(ErrorMessage = "The Employee name is required.")]
+        [StringLength(50, MinimumLength = 1, ErrorMessage = "The Employee name must be between 1 and 50 characters long.")]
+        public string EmployeeName { get; set; }
 
-        [Required(ErrorMessage = "The product price is required.")]
-        public double Price { get; set; }
+        [Required(ErrorMessage = "Address field is required.")]
+        [StringLength(255, MinimumLength = 10, ErrorMessage = "Address must be between 10 and 255 characters long.")]
+        public string Address { get; set; }
+
+        [Required(ErrorMessage = "Email field is required.")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Phone field is required.")]
+        public string Phone { get; set; }
 
         public bool isNew { get; set; }
 

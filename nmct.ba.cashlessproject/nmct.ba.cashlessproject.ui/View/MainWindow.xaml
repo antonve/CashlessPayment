@@ -17,6 +17,9 @@
         <DataTemplate DataType="{x:Type vm:ManagementProductsVM}">
             <v:ManagementProducts/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ManagementEmployeesVM}">
+            <v:ManagementEmployees/>
+        </DataTemplate>
         <Style x:Key="ActiveButton" TargetType="Button">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=IsActive, UpdateSourceTrigger=PropertyChanged}" Value="True">

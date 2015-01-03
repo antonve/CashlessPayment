@@ -11,7 +11,7 @@ using System.Configuration;
 
 namespace nmct.ba.cashlessproject.api.Models
 {
-    public class ProductDA
+    public class EmployeeDA
     {
         private static ConnectionStringSettings CreateConnectionString(IEnumerable<Claim> claims)
         {
@@ -22,11 +22,11 @@ namespace nmct.ba.cashlessproject.api.Models
             return Database.CreateConnectionString("System.Data.SqlClient", @"IKORE\SQLEXPRESS", Cryptography.Decrypt(dbname), Cryptography.Decrypt(dblogin), Cryptography.Decrypt(dbpass));
         }
 
-        public static List<Product> GetProducts(IEnumerable<Claim> claims)
+        public static List<Employee> GetEmployees(IEnumerable<Claim> claims)
         {
-            List<Product> list = new List<Product>();
+            List<Employee> list = new List<Employee>();
             
-            string sql = "SELECT ID, ProductName, Price FROM Product";
+            string sql = "SELECT ID, EmployeeName, Address, Email, Phone FROM Employee";
             DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql);
 
             while (reader.Read())
@@ -38,17 +38,19 @@ namespace nmct.ba.cashlessproject.api.Models
             return list;
         }
 
-        private static Product Create(IDataRecord record)
+        private static Employee Create(IDataRecord record)
         {
-            return new Product()
+            return new Employee()
             {
                 ID = Int32.Parse(record["ID"].ToString()),
-                ProductName = record["ProductName"].ToString(),
-                Price = Double.Parse(record["Price"].ToString())
+                EmployeeName = record["EmployeeName"].ToString(),
+                Address = record["Address"].ToString(),
+                Email = record["Email"].ToString(),
+                Phone = record["Phone"].ToString()
             };
         }
 
-        public static int UpdateProduct(Product p, IEnumerable<Claim> claims)
+        public static int UpdateEmployee(Employee p, IEnumerable<Claim> claims)
         {
             int rowsaffected = 0;
             DbTransaction trans = null;
@@ -57,11 +59,13 @@ namespace nmct.ba.cashlessproject.api.Models
             {
                 trans = Database.BeginTransaction(CreateConnectionString(claims));
 
-                string sql = "UPDATE Product SET ProductName = @ProductName, Price = @Price WHERE ID = @ID";
-                DbParameter par1 = Database.AddParameter("ConnectionString", "@ProductName", p.ProductName);
-                DbParameter par2 = Database.AddParameter("ConnectionString", "@Price", p.Price);
+                string sql = "UPDATE Employee SET EmployeeName = @EmployeeName, Address = @Address, Email = @Email, Phone = @Phone WHERE ID = @ID";
+                DbParameter par1 = Database.AddParameter("ConnectionString", "@EmployeeName", p.EmployeeName);
+                DbParameter par2 = Database.AddParameter("ConnectionString", "@Address", p.Address);
                 DbParameter par3 = Database.AddParameter("ConnectionString", "@ID", p.ID);
-                rowsaffected += Database.ModifyData(trans, sql, par1, par2, par3);
+                DbParameter par4 = Database.AddParameter("ConnectionString", "@Email", p.Email);
+                DbParameter par5 = Database.AddParameter("ConnectionString", "@Phone", p.Phone);
+                rowsaffected += Database.ModifyData(trans, sql, par1, par2, par3, par4, par5);
 
                 trans.Commit();
             }
@@ -79,7 +83,7 @@ namespace nmct.ba.cashlessproject.api.Models
             return rowsaffected;
         }
 
-        public static int DeleteProduct(int id, IEnumerable<Claim> claims)
+        public static int DeleteEmployee(int id, IEnumerable<Claim> claims)
         {
             int rowsaffected = 0;
             DbTransaction trans = null;
@@ -88,7 +92,7 @@ namespace nmct.ba.cashlessproject.api.Models
             {
                 trans = Database.BeginTransaction(CreateConnectionString(claims));
 
-                string sql = "DELETE FROM Product WHERE ID = @ID";
+                string sql = "DELETE FROM Employee WHERE ID = @ID";
                 DbParameter par1 = Database.AddParameter("ConnectionString", "@ID", id);
                 rowsaffected += Database.ModifyData(trans, sql, par1);
 
@@ -108,7 +112,7 @@ namespace nmct.ba.cashlessproject.api.Models
             return rowsaffected;
         }
 
-        public static int SaveProduct(Product p, IEnumerable<Claim> claims)
+        public static int SaveEmployee(Employee p, IEnumerable<Claim> claims)
         {
             int rowsaffected = 0;
             DbTransaction trans = null;
@@ -117,14 +121,16 @@ namespace nmct.ba.cashlessproject.api.Models
             {
                 trans = Database.BeginTransaction(CreateConnectionString(claims));
 
-                string sql = "INSERT INTO Product (ProductName, Price) VALUES(@ProductName, @Price)";
-                DbParameter par1 = Database.AddParameter("ConnectionString", "@ProductName", p.ProductName);
-                DbParameter par2 = Database.AddParameter("ConnectionString", "@Price", p.Price);
-                rowsaffected += Database.ModifyData(trans, sql, par1, par2);
+                string sql = "INSERT INTO Employee (EmployeeName, Address, Email, Phone) VALUES(@EmployeeName, @Address, @Email, @Phone)";
+                DbParameter par1 = Database.AddParameter("ConnectionString", "@EmployeeName", p.EmployeeName);
+                DbParameter par2 = Database.AddParameter("ConnectionString", "@Address", p.Address);
+                DbParameter par3 = Database.AddParameter("ConnectionString", "@Email", p.Email);
+                DbParameter par4 = Database.AddParameter("ConnectionString", "@Phone", p.Phone);
+                rowsaffected += Database.ModifyData(trans, sql, par1, par2, par3, par4);
 
                 trans.Commit();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (trans != null)
                     trans.Rollback();
