@@ -24,65 +24,65 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="130" />
             <ColumnDefinition Width="300" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="0" Grid.Row="0" Content="Logout" />
+        <Button Grid.Column="0" Grid.Row="0" Content="Logout" Command="{Binding LogoutCommand}"/>
 
         <TextBlock Grid.Column="0" Grid.Row="1">New password</TextBlock>
         <TextBlock Grid.Column="0" Grid.Row="2">Repeat new password</TextBlock>
         <TextBlock Grid.Column="0" Grid.Row="3">Old password</TextBlock>
 
-        <PasswordBox Grid.Column="1" Grid.Row="1" x:Name="psbPassword1">
+        <PasswordBox Grid.Column="1" Grid.Row="1" x:Name="psbPassword1" Password="azerty">
             <PasswordBox.InputBindings>
                 <KeyBinding Command="{Binding ChangePasswordCommand}" Key="Return">
                     <KeyBinding.CommandParameter>
                         <MultiBinding Converter="{StaticResource MultiPasswordConverter}">
                             <Binding ElementName="psbPassword1"/>
                             <Binding ElementName="psbPassword2"/>
-                            <Binding ElementName="psbNewPassword"/>
+                            <Binding ElementName="psbOldPassword"/>
                         </MultiBinding>
                     </KeyBinding.CommandParameter>
                 </KeyBinding>
             </PasswordBox.InputBindings>
         </PasswordBox>
 
-        <PasswordBox Grid.Column="1" Grid.Row="2" x:Name="psbPassword2">
+        <PasswordBox Grid.Column="1" Grid.Row="2" x:Name="psbPassword2" Password="azerty">
             <PasswordBox.InputBindings>
                 <KeyBinding Command="{Binding ChangePasswordCommand}" Key="Return">
                     <KeyBinding.CommandParameter>
                         <MultiBinding Converter="{StaticResource MultiPasswordConverter}">
                             <Binding ElementName="psbPassword1"/>
                             <Binding ElementName="psbPassword2"/>
-                            <Binding ElementName="psbNewPassword"/>
+                            <Binding ElementName="psbOldPassword"/>
                         </MultiBinding>
                     </KeyBinding.CommandParameter>
                 </KeyBinding>
             </PasswordBox.InputBindings>
         </PasswordBox>
 
-        <PasswordBox Grid.Column="1" Grid.Row="3" x:Name="psbNewPassword">
+        <PasswordBox Grid.Column="1" Grid.Row="3" x:Name="psbOldPassword" Password="qwerty">
             <PasswordBox.InputBindings>
                 <KeyBinding Command="{Binding ChangePasswordCommand}" Key="Return">
                     <KeyBinding.CommandParameter>
                         <MultiBinding Converter="{StaticResource MultiPasswordConverter}">
                             <Binding ElementName="psbPassword1"/>
                             <Binding ElementName="psbPassword2"/>
-                            <Binding ElementName="psbNewPassword"/>
+                            <Binding ElementName="psbOldPassword"/>
                         </MultiBinding>
                     </KeyBinding.CommandParameter>
                 </KeyBinding>
             </PasswordBox.InputBindings>
         </PasswordBox>
             
-        <Button Grid.Column="1" Grid.Row="4" Command="{Binding ChangePasswordCommand}">
+        <Button Grid.Column="1" Grid.Row="4" Command="{Binding ChangePasswordCommand}" Content="Change password">
             <Button.CommandParameter>
                 <MultiBinding Converter="{StaticResource MultiPasswordConverter}">
                     <Binding ElementName="psbPassword1"/>
                     <Binding ElementName="psbPassword2"/>
-                    <Binding ElementName="psbNewPassword"/>
+                    <Binding ElementName="psbOldPassword"/>
                 </MultiBinding>
             </Button.CommandParameter>
         </Button>

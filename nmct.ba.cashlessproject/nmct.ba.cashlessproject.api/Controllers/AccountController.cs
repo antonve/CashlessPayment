@@ -126,6 +126,8 @@ namespace nmct.ba.cashlessproject.api.Controllers
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
 
+            string lol = "lol";
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);

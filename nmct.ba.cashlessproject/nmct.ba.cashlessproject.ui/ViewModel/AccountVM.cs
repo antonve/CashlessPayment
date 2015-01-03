@@ -22,6 +22,16 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
             get { return "Account"; }
         }
 
+        public ICommand LogoutCommand
+        {
+            get { return new RelayCommand(Logout); }
+        }
+
+        private void Logout()
+        {
+            ApplicationVM appvm = App.Current.MainWindow.DataContext as ApplicationVM;
+            appvm.Logout();
+        }
 
         public ICommand ChangePasswordCommand
         {

@@ -66,6 +66,20 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
             Username = username;
         }
 
+        public void Logout()
+        {
+            while (Pages.Count > 0)
+            {
+                Pages.RemoveAt(Pages.Count - 1);
+            }
+
+            Pages.Add(new LoginVM());
+            AppTitle = "Cashless Payment";
+            Username = null;
+            CurrentPage = Pages[0];
+            token = null;
+        }
+
         // ETC
         private string _appTitle = "Cashless Payment";
 
