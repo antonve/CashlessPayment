@@ -11,6 +11,14 @@
         <vm:ManagementProductsVM />
     </UserControl.DataContext>
     <UserControl.Resources>
+        <ControlTemplate x:Key="ErrorTemplate">
+            <StackPanel>
+                <Border BorderBrush="Red" BorderThickness="2">
+                    <AdornedElementPlaceholder/>
+                </Border>
+                <TextBlock Foreground="Red" Text="{Binding [0].ErrorContent}"/>
+            </StackPanel>
+        </ControlTemplate>
         <Style x:Key="IsNewEnabled" TargetType="FrameworkElement" BasedOn="{StaticResource DefaultMargin}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding SaveMode}" Value="True">
@@ -43,6 +51,19 @@
             </Style.Triggers>
             <Setter Property="IsEnabled" Value="False" />
         </Style>
+        <Style x:Key="IsSubmitEnabled" TargetType="FrameworkElement" BasedOn="{StaticResource DefaultMargin}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsFormEnabled}" Value="True" />
+                        <Condition Binding="{Binding ElementName=txbName, Path=(Validation.HasError)}" Value="false" />
+                        <Condition Binding="{Binding ElementName=txbPrice, Path=(Validation.HasError)}" Value="false" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="IsEnabled" Value="True" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+            <Setter Property="IsEnabled" Value="False" />
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -65,16 +86,16 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" x:Name="btnNew" Command="{Binding NewProductCommand}" Style="{StaticResource IsNewEnabled}">New</Button>
+                <Button Grid.Column="0" x:Name="btnNew" Command="{Binding NewProductCommand}" CommandParameter="{Binding ElementName=txbName}" Style="{StaticResource IsNewEnabled}">New</Button>
                 <Button Grid.Column="1" x:Name="btnEdit" Command="{Binding EditProductCommand}" Style="{StaticResource IsEditEnabled}">Edit</Button>
                 <Button Grid.Column="2" Command="{Binding DeleteProductCommand}" Style="{StaticResource IsDeleteEnabled}">Delete</Button>
             </Grid>
 
             <StackPanel Grid.Row="1" Style="{StaticResource IsFormEnabled}">
                 <TextBlock>Product name</TextBlock>
-                <TextBox x:Name="txbName" Text="{Binding CurrentProduct.ProductName}" />
+                <TextBox x:Name="txbName" Text="{Binding CurrentProduct.ProductName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
                 <TextBlock>Price</TextBlock>
-                <TextBox x:Name="txbPrice" Text="{Binding CurrentProduct.Price}" />
+                <TextBox x:Name="txbPrice" Text="{Binding CurrentProduct.Price, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
             </StackPanel>
 
             <Grid Grid.Row="2">
@@ -86,7 +107,7 @@
                 <Button 
                     Grid.Column="0" 
                     x:Name="btnSave" 
-                    Style="{StaticResource IsFormEnabled}"
+                    Style="{StaticResource IsSubmitEnabled}"
                     Command="{Binding SaveProductCommand}">
                     Save
                 </Button>

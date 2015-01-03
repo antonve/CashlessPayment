@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace nmct.ba.cashlessproject.model
 {
-    public class Product
+    public class Product : IDataErrorInfo
     {
         public int ID { get; set; }
 

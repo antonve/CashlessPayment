@@ -96,16 +96,18 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
 
         public ICommand NewProductCommand
         {
-            get { return new RelayCommand(NewProduct); }
+            get { return new RelayCommand<object>(NewProduct); }
         }
 
-        private void NewProduct()
+        private void NewProduct(object field)
         {
-            CurrentProduct = new Product();
+            CurrentProduct = new Product() { ProductName = "Product name" };
             SaveMode = true;
             IsFormEnabled = true;
             IsEditEnabled = false;
             IsDeleteEnabled = false;
+            (field as System.Windows.Controls.TextBox).Focus();
+            (field as System.Windows.Controls.TextBox).SelectAll();
         }
 
         public ICommand EditProductCommand
