@@ -34,8 +34,9 @@
         <TextBlock Grid.Column="0" Grid.Row="1">New password</TextBlock>
         <TextBlock Grid.Column="0" Grid.Row="2">Repeat new password</TextBlock>
         <TextBlock Grid.Column="0" Grid.Row="3">Old password</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding Error}" Foreground="Red" />
 
-        <PasswordBox Grid.Column="1" Grid.Row="1" x:Name="psbPassword1" Password="azerty">
+        <PasswordBox Grid.Column="1" Grid.Row="1" x:Name="psbPassword1">
             <PasswordBox.InputBindings>
                 <KeyBinding Command="{Binding ChangePasswordCommand}" Key="Return">
                     <KeyBinding.CommandParameter>
@@ -49,7 +50,7 @@
             </PasswordBox.InputBindings>
         </PasswordBox>
 
-        <PasswordBox Grid.Column="1" Grid.Row="2" x:Name="psbPassword2" Password="azerty">
+        <PasswordBox Grid.Column="1" Grid.Row="2" x:Name="psbPassword2">
             <PasswordBox.InputBindings>
                 <KeyBinding Command="{Binding ChangePasswordCommand}" Key="Return">
                     <KeyBinding.CommandParameter>
@@ -63,7 +64,7 @@
             </PasswordBox.InputBindings>
         </PasswordBox>
 
-        <PasswordBox Grid.Column="1" Grid.Row="3" x:Name="psbOldPassword" Password="qwerty">
+        <PasswordBox Grid.Column="1" Grid.Row="3" x:Name="psbOldPassword">
             <PasswordBox.InputBindings>
                 <KeyBinding Command="{Binding ChangePasswordCommand}" Key="Return">
                     <KeyBinding.CommandParameter>

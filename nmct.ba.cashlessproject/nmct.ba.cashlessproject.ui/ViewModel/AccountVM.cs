@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -27,6 +28,20 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
         public string Name
         {
             get { return "Account"; }
+        }
+
+        private string _error;
+        public string Error
+        {
+            get
+            {
+                return _error;
+            }
+            set
+            {
+                _error = value;
+                OnPropertyChanged("Error");
+            }
         }
 
         public ICommand LogoutCommand
@@ -60,16 +75,16 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
                 client.SetBearerToken(ApplicationVM.token.AccessToken);
                 string json = JsonConvert.SerializeObject(data);
 
-                response = await client.PostAsync("http://localhost:46080/api/Account/ChangePassword", new StringContent(json, Encoding.UTF8, "application/json"));
+                response = await client.PutAsync("http://localhost:46080/api/Account/ChangePassword", new StringContent(json, Encoding.UTF8, "application/json"));
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string jsonresponse = await response.Content.ReadAsStringAsync();
-                    int result = JsonConvert.DeserializeObject<int>(jsonresponse);
-
-                    if (result == 1)
-                    {
-                    }
+                    MessageBox.Show("Password changed, please log in again.");
+                    Logout();
+                }
+                else
+                {
+                    Error = response.ReasonPhrase;
                 }
             }
         }

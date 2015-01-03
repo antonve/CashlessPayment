@@ -27,7 +27,7 @@ namespace nmct.ba.cashlessproject.api
             }
 
             var id = new ClaimsIdentity(context.Options.AuthenticationType);
-            id.AddClaim(new Claim(ClaimTypes.NameIdentifier, o.ID.ToString()));
+            id.AddClaim(new Claim("userid", o.ID.ToString()));
             id.AddClaim(new Claim("dbname", o.DbName));
             id.AddClaim(new Claim("dblogin", o.DbLogin));
             id.AddClaim(new Claim("dbpass", o.DbPassword));

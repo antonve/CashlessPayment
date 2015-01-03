@@ -42,6 +42,6 @@
         </PasswordBox>
         <Button Grid.Row="3" Grid.Column="2" x:Name="btnLogin" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=psbPassword}">Login</Button>
 
-        <TextBlock Grid.Row="4" Grid.Column="2" x:Name="Error" Text="{Binding Error}" />
+        <TextBlock Grid.Row="4" Grid.Column="2" x:Name="Error" Text="{Binding Error}" Foreground="Red" />
     </Grid>
 </UserControl>
