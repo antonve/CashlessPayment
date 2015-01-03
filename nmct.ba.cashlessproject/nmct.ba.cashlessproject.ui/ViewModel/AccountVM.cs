@@ -17,6 +17,13 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
         {
         }
 
+        private bool _isActive;
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { _isActive = value; OnPropertyChanged("IsActive"); }
+        }
+
         public string Name
         {
             get { return "Account"; }

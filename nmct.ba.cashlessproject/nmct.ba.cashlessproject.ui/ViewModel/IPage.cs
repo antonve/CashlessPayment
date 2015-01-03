@@ -9,5 +9,6 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
     interface IPage
     {
         string Name { get; }
+        bool IsActive { get; set; }
     }
 }

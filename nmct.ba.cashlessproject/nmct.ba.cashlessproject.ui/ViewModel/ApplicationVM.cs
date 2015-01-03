@@ -22,11 +22,23 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
         }
 
         // PAGE HANDLING
-        private object currentPage;
-        public object CurrentPage
+        private IPage currentPage;
+        public IPage CurrentPage
         {
             get { return currentPage; }
-            set { currentPage = value; OnPropertyChanged("CurrentPage"); }
+            set 
+            {
+                if (currentPage != null)
+                {
+                    currentPage.IsActive = false;
+                }
+                currentPage = value;
+                if (currentPage != null)
+                {
+                    currentPage.IsActive = true;
+                }
+                OnPropertyChanged("CurrentPage");
+            }
         }
 
         private ObservableCollection<IPage> pages;
