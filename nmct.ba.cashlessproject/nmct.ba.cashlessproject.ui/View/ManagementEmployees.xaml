@@ -101,13 +101,13 @@
 
             <StackPanel Grid.Row="1" Style="{StaticResource IsFormEnabled}">
                 <TextBlock>Employee name</TextBlock>
-                <TextBox x:Name="txbName" Text="{Binding CurrentEmployee.EmployeeName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
+                <TextBox x:Name="txbName" Text="{Binding CurrentEmployee.EmployeeName, ValidatesOnDataErrors=True}" />
                 <TextBlock>Address</TextBlock>
-                <TextBox x:Name="txbAddress" Text="{Binding CurrentEmployee.Address, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
+                <TextBox x:Name="txbAddress" Text="{Binding CurrentEmployee.Address, ValidatesOnDataErrors=True}" />
                 <TextBlock>Email</TextBlock>
-                <TextBox x:Name="txbEmail" Text="{Binding CurrentEmployee.Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
+                <TextBox x:Name="txbEmail" Text="{Binding CurrentEmployee.Email, ValidatesOnDataErrors=True}" />
                 <TextBlock>Phone</TextBlock>
-                <TextBox x:Name="txbPhone" Text="{Binding CurrentEmployee.Phone, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
+                <TextBox x:Name="txbPhone" Text="{Binding CurrentEmployee.Phone, ValidatesOnDataErrors=True}" />
             </StackPanel>
 
             <Grid Grid.Row="2">

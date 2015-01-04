@@ -99,9 +99,9 @@
 
             <StackPanel Grid.Row="1" Style="{StaticResource IsFormEnabled}">
                 <TextBlock>Product name</TextBlock>
-                <TextBox x:Name="txbName" Text="{Binding CurrentProduct.ProductName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
+                <TextBox x:Name="txbName" Text="{Binding CurrentProduct.ProductName, ValidatesOnDataErrors=True}" />
                 <TextBlock>Price</TextBlock>
-                <TextBox x:Name="txbPrice" Text="{Binding CurrentProduct.Price, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
+                <TextBox x:Name="txbPrice" Text="{Binding CurrentProduct.Price, ValidatesOnDataErrors=True}" />
             </StackPanel>
 
             <Grid Grid.Row="2">
