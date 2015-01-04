@@ -1,0 +1,51 @@
+﻿<Window x:Class="nmct.ba.cashlessproject.salesapp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:v="clr-namespace:nmct.ba.cashlessproject.salesapp.View"
+        xmlns:vm="clr-namespace:nmct.ba.cashlessproject.salesapp.ViewModel"
+        Title="{Binding AppTitle}" Width="900" Height="600">
+    <Window.DataContext>
+        <vm:ApplicationVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:LoginVM}">
+            <v:Login/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:StatisticsVM}">
+            <v:Statistics/>
+        </DataTemplate>
+        <Style x:Key="ActiveButton" TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsActive, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="BorderThickness" Value="0, 0, 1, 0" />
+                </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="Background" Value="#e2e9ff" />
+            <Setter Property="BorderThickness" Value="0, 0, 1, 1" />
+            <Setter Property="BorderBrush" Value="RoyalBlue" />
+            <Setter Property="Foreground" Value="RoyalBlue" />
+            <Setter Property="Padding" Value="20, 5, 20, 5" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ItemsControl ItemsSource="{Binding Pages}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Background="RoyalBlue" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Name}" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}" Style="{StaticResource ActiveButton}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
+        <ContentControl Grid.Row="1" Content="{Binding CurrentPage}"/>
+    </Grid>
+</Window>

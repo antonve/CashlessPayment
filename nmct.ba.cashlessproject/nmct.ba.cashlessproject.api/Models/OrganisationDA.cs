@@ -42,5 +42,51 @@ namespace nmct.ba.cashlessproject.api.Models
 
         }
 
+        public static List<Organisation> GetOrganisations()
+        {
+            List<Organisation> results = new List<Organisation>();
+            string sql = "SELECT ID, OrganisationName FROM Organisation";
+            DbDataReader reader = Database.GetData(Database.GetConnection("AdminDB"), sql);
+
+            while (reader.Read())
+            {
+                Organisation org = new Organisation()
+                {
+                    ID = Convert.ToInt32(reader["ID"].ToString()),
+                    OrganisationName = reader["OrganisationName"].ToString()
+                };
+
+                results.Add(org);
+            }
+
+            reader.Close();
+
+            return results;
+        }
+
+        public static Organisation GetOrganisation(int id)
+        {
+            Organisation result = null;
+            string sql = "SELECT id, DbName, DbLogin, DbPassword, OrganisationName FROM Organisation WHERE ID = @ID";
+            DbParameter par1 = Database.AddParameter("AdminDB", "@ID", id);
+            DbDataReader reader = Database.GetData(Database.GetConnection("AdminDB"), sql, par1);
+
+            while (reader.Read())
+            {
+                result = new Organisation()
+                {
+                    ID = Int32.Parse(reader["ID"].ToString()),
+                    DbName = reader["DbName"].ToString(),
+                    DbLogin = reader["DbLogin"].ToString(),
+                    DbPassword = reader["DbPassword"].ToString(),
+                    OrganisationName = reader["OrganisationName"].ToString()
+                };
+            }
+
+            reader.Close();
+
+            return result;
+        }
+
     }
 }

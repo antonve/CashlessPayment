@@ -41,5 +41,10 @@ namespace nmct.ba.cashlessproject.model
 
         [Required]
         public string Phone { get; set; }
+
+        public override string ToString()
+        {
+            return OrganisationName;
+        }
     }
 }
