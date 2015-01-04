@@ -6,6 +6,8 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Web;
+using System.IO;
+using System.Web.Hosting;
 
 namespace nmct.ssa.cashlessproject.webapp.DataAccess
 {
@@ -87,6 +89,9 @@ VALUES (@Org, @Address, @Email, @Phone, @Login, @Password, @DbName, @DbLogin, @D
                     DbParameter par8 = Database.AddParameter(cs, "@DbLogin", Cryptography.Encrypt(org.DbLogin));
                     DbParameter par9 = Database.AddParameter(cs, "@DbPassword", Cryptography.Encrypt(org.DbPassword));
                     rowsaffected += Database.InsertData(trans, sql, par1, par2, par3, par4, par5, par6, par7, par8, par9);
+
+                    org.ID = rowsaffected;
+                    CreateDatabase(org);
                 }
                 else
                 {
@@ -108,8 +113,8 @@ VALUES (@Org, @Address, @Email, @Phone, @Login, @Password, @DbName, @DbLogin, @D
                     DbParameter par5 = Database.AddParameter(cs, "@Email", org.Email);
                     DbParameter par6 = Database.AddParameter(cs, "@Phone", org.Phone);
                     rowsaffected += Database.ModifyData(trans, sql, par1, par2, par3, par4, par5, par6, parPass);
-
                 }
+
                 trans.Commit();
             }
             catch (Exception)
@@ -124,6 +129,56 @@ VALUES (@Org, @Address, @Email, @Phone, @Login, @Password, @DbName, @DbLogin, @D
             }
 
             return rowsaffected;
+        }
+
+
+        private static void CreateDatabase(Organisation o)
+        {
+            // create the actual database
+            string create = File.ReadAllText(HostingEnvironment.MapPath(@"~/App_Data/create.txt"));
+            string sql = create.Replace("@@DbName", o.DbName).Replace("@@DbLogin", o.DbLogin).Replace("@@DbPassword", o.DbPassword);
+            foreach (string commandText in RemoveGo(sql))
+            {
+                try
+                {
+                    int res = Database.ModifyData(Database.GetConnection("AdminDB"), commandText);
+                    Console.WriteLine(res.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            // create login, user and tables
+            DbTransaction trans = null;
+            try
+            {
+                trans = Database.BeginTransaction("AdminDB");
+
+                string fill = File.ReadAllText(HostingEnvironment.MapPath(@"~/App_Data/fill.txt"));
+                string sql2 = fill.Replace("@@DbName", o.DbName).Replace("@@DbLogin", o.DbLogin).Replace("@@DbPassword", o.DbPassword);
+
+                foreach (string commandText in RemoveGo(sql2))
+                {
+                    Database.ModifyData(trans, commandText);
+                }
+
+                trans.Commit();
+            }
+            catch (Exception ex)
+            {
+                trans.Rollback();
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private static string[] RemoveGo(string input)
+        {
+            //split the script on "GO" commands
+            string[] splitter = new string[] { "\r\nGO\r\n" };
+            string[] commandTexts = input.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            return commandTexts;
         }
     }
 }

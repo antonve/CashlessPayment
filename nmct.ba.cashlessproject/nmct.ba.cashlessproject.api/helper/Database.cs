@@ -15,7 +15,7 @@ namespace nmct.ba.cashlessproject.api.helper
         {
             ConnectionStringSettings settings = new ConnectionStringSettings();
             settings.ProviderName = provider;
-            settings.ConnectionString = "Data Source=" + server + ";Initial Catalog=" + database + ";User ID=" + username + ";Password=" + password;
+            settings.ConnectionString = @"Data Source=" + server + ";Initial Catalog=" + database + ";User ID=" + username + ";Password=" + password;
             return settings;
         }
 

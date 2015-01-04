@@ -91,7 +91,7 @@ namespace nmct.ssa.cashlessproject.webapp.fonts
                     Login = org.Login,
                     Password = org.Password,
                     DbLogin = db,
-                    DbPassword = Cryptography.Encrypt((new Random()).Next(999, 999999).ToString()),
+                    DbPassword = (new Regex("[^a-zA-Z0-9]")).Replace(Cryptography.Encrypt((new Random()).Next(999, 999999).ToString()), ""),
                     DbName = db,
                     OrganisationName = org.OrganisationName,
                     Address = org.Address,
