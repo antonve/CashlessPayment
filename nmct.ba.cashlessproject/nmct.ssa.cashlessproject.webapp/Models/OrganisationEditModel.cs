@@ -16,6 +16,7 @@ namespace nmct.ssa.cashlessproject.webapp.Models
         [DisplayName("Username")]
         public string Login { get; set; }
 
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Required]
