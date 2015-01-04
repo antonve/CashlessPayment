@@ -17,5 +17,10 @@ namespace nmct.ba.cashlessproject.model
         public string Device { get; set; }
 
         public List<RegisterLog> Logs { get; set; }
+
+        public override string ToString()
+        {
+            return RegisterName;
+        }
     }
 }

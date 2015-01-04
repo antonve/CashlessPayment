@@ -47,5 +47,10 @@ namespace nmct.ba.cashlessproject.model
                 return String.Empty;
             }
         }
+
+        public override string ToString()
+        {
+            return ProductName;
+        }
     }
 }

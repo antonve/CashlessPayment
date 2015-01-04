@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:v="clr-namespace:nmct.ba.cashlessproject.ui.View"
         xmlns:vm="clr-namespace:nmct.ba.cashlessproject.ui.ViewModel"
-        Title="{Binding AppTitle}" Width="800" Height="600">
+        Title="{Binding AppTitle}" Width="900" Height="600">
     <Window.DataContext>
         <vm:ApplicationVM/>
     </Window.DataContext>
@@ -25,6 +25,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:ManagementCustomersVM}">
             <v:ManagementCustomers/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:StatisticsVM}">
+            <v:Statistics/>
         </DataTemplate>
         <Style x:Key="ActiveButton" TargetType="Button">
             <Style.Triggers>

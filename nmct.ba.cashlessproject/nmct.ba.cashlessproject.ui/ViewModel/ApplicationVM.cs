@@ -71,6 +71,7 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
         public void Login(string username)
         {
             Pages.RemoveAt(0);
+            Pages.Add(new StatisticsVM());
             Pages.Add(new ManagementCustomersVM());
             Pages.Add(new ManagementRegistersVM());
             Pages.Add(new AccountVM());
