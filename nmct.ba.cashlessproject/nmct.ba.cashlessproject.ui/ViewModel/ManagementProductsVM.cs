@@ -169,6 +169,7 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
             SaveMode = false;
             CurrentProduct = null;
             IsFormEnabled = false;
+            GetProducts();
         }
 
         public ICommand SaveProductCommand
@@ -222,6 +223,7 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
 
                     if (result == 1)
                     {
+                        SaveMode = false;
                         GetProducts();
                         CurrentProduct = null;
                     }

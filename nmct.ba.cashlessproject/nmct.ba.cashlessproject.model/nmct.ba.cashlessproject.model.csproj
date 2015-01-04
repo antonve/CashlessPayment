@@ -43,6 +43,8 @@
     <Compile Include="Customer.cs" />
     <Compile Include="Organisation.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="RegisterLog.cs" />
+    <Compile Include="Register.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

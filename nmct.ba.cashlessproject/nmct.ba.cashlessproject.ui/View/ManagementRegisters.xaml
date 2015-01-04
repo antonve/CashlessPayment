@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="nmct.ba.cashlessproject.ui.View.ManagementRegisters"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:nmct.ba.cashlessproject.ui.ViewModel"
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vm:ManagementRegistersVM />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <ListBox Grid.Column="0" ItemsSource="{Binding Registers}" DisplayMemberPath="RegisterName" SelectedItem="{Binding CurrentRegister}" />
+       
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" IsEnabled="False">
+                <TextBlock>Register name</TextBlock>
+                <TextBox Text="{Binding CurrentRegister.RegisterName}" />
+                <TextBlock>Device</TextBlock>
+                <TextBox Text="{Binding CurrentRegister.Device}" />
+            </StackPanel>
+            <DataGrid Grid.Row="1" ItemsSource="{Binding CurrentRegister.Logs}" IsReadOnly="True" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Employee name" Binding="{Binding EmployeeName}" />
+                    <DataGridTextColumn Header="From" Binding="{Binding FromTime}" />
+                    <DataGridTextColumn Header="Until" Binding="{Binding UntilTime}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

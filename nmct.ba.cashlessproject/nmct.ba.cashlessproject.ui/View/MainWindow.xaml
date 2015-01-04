@@ -20,6 +20,12 @@
         <DataTemplate DataType="{x:Type vm:ManagementEmployeesVM}">
             <v:ManagementEmployees/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ManagementRegistersVM}">
+            <v:ManagementRegisters/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ManagementCustomersVM}">
+            <v:ManagementCustomers/>
+        </DataTemplate>
         <Style x:Key="ActiveButton" TargetType="Button">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=IsActive, UpdateSourceTrigger=PropertyChanged}" Value="True">

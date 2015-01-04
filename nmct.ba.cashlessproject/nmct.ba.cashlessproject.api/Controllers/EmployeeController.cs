@@ -21,17 +21,17 @@ namespace nmct.ba.cashlessproject.api.Controllers
         }
 
         // POST: api/Employee
-        public int Post([FromBody]Employee prod)
+        public int Post([FromBody]Employee employee)
         {
             ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
-            return EmployeeDA.SaveEmployee(prod, p.Claims);
+            return EmployeeDA.SaveEmployee(employee, p.Claims);
         }
 
         // PUT: api/Employee/5
-        public int Put(int id, [FromBody]Employee prod)
+        public int Put(int id, [FromBody]Employee employee)
         {
             ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
-            return EmployeeDA.UpdateEmployee(prod, p.Claims);
+            return EmployeeDA.UpdateEmployee(employee, p.Claims);
         }
 
         // DELETE: api/Employee/5

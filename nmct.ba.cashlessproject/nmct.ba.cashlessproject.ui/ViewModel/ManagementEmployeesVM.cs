@@ -169,6 +169,7 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
             SaveMode = false;
             CurrentEmployee = null;
             IsFormEnabled = false;
+            GetEmployees();
         }
 
         public ICommand SaveEmployeeCommand
@@ -222,6 +223,7 @@ namespace nmct.ba.cashlessproject.ui.ViewModel
 
                     if (result == 1)
                     {
+                        SaveMode = false;
                         GetEmployees();
                         CurrentEmployee = null;
                     }
