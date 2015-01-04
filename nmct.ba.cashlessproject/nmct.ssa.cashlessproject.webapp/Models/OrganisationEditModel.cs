@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace nmct.ba.cashlessproject.model
+namespace nmct.ssa.cashlessproject.webapp.Models
 {
-    public class Organisation
+    public class OrganisationEditModel
     {
         public int ID { get; set; }
 
@@ -17,17 +17,6 @@ namespace nmct.ba.cashlessproject.model
         public string Login { get; set; }
 
         public string Password { get; set; }
-
-        [Required]
-        [DisplayName("Database name")]
-        public string DbName { get; set; }
-
-        [Required]
-        [DisplayName("Database username")]
-        public string DbLogin { get; set; }
-
-        [DisplayName("Database password")]
-        public string DbPassword { get; set; }
 
         [Required]
         [DisplayName("Organisation name")]

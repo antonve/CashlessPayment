@@ -119,6 +119,8 @@
     </Compile>
     <Compile Include="helper\Cryptography.cs" />
     <Compile Include="helper\Database.cs" />
+    <Compile Include="Models\OrganisationNewModel.cs" />
+    <Compile Include="Models\OrganisationEditModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -158,10 +160,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Organisation\Index.cshtml" />
     <Content Include="Views\Organisation\Details.cshtml" />
+    <Content Include="Views\Organisation\Edit.cshtml" />
+    <Content Include="Views\Organisation\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

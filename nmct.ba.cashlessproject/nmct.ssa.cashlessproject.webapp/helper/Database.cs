@@ -174,7 +174,17 @@ namespace nmct.ssa.cashlessproject.webapp.helper
 
             if (parameters != null)
             {
-                command.Parameters.AddRange(parameters);
+                // remove nulls
+                List<DbParameter> cleanParameters = new List<DbParameter>();
+                for (int i = parameters.Count() - 1; i >= 0; i--)
+                {
+                    if (parameters[i] != null)
+                    {
+                        cleanParameters.Add(parameters[i]);
+                    }
+                }
+
+                command.Parameters.AddRange(cleanParameters.ToArray());
             }
 
             return command;
