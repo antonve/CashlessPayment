@@ -19,5 +19,12 @@ namespace nmct.ba.cashlessproject.api.Controllers
             ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
             return SaleDA.GetSales(p.Claims);
         }
+
+        // POST: api/Sale
+        public int Post([FromBody]Sale sale)
+        {
+            ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
+            return SaleDA.SaveSale(sale, p.Claims);
+        }
     }
 }

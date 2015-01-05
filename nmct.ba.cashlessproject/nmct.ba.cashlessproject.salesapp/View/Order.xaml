@@ -79,7 +79,7 @@
                 <Button 
                     Grid.Column="0" 
                     Style="{StaticResource IsSubmitEnabled}"
-                    Command="{Binding SaveProductCommand}">
+                    Command="{Binding SaveOrderCommand}">
                     Save
                 </Button>
             </StackPanel>

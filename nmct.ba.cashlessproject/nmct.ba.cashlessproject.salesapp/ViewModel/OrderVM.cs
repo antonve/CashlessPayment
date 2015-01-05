@@ -130,13 +130,42 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
 
         private void CheckForError()
         {
-            if (CurrentCustomer.Balance >= (CurrentSale.Amount * CurrentProduct.Price)) 
+            if (CurrentCustomer.Balance >= (CurrentSale.Amount * CurrentProduct.Price))
             {
                 Error = false;
             }
             else
             {
                 Error = true;
+            }
+        }
+
+        public ICommand SaveOrderCommand
+        {
+            get { return new RelayCommand(Save); }
+        }
+
+        private async void Save()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string json = JsonConvert.SerializeObject(CurrentSale);
+                HttpResponseMessage response;
+                client.SetBearerToken(ApplicationVM.token.AccessToken);
+
+                response = await client.PostAsync("http://localhost:46080/api/Sale", new StringContent(json, Encoding.UTF8, "application/json"));
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonresponse = await response.Content.ReadAsStringAsync();
+                    int result = JsonConvert.DeserializeObject<int>(jsonresponse);
+
+                    if (result != 0)
+                    {
+                        MessageBox.Show("Order processed.");
+                        Cancel();
+                    }
+                }
             }
         }
 
@@ -195,6 +224,7 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
                 if (CurrentSale != null)
                 {
                     CurrentSale.ProductID = currentProduct.ID;
+                    CurrentSale.SinglePrice = CurrentProduct.Price;
                     CheckForError();
                 }
                 OnPropertyChanged("CurrentProduct");
@@ -259,7 +289,7 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
         {
             IsFormEnabled = false;
             IsNewEnabled = false;
-            CurrentSale = new Sale() { Amount = 1, RegisterID = CurrentRegister.ID, ProductID = CurrentProduct.ID };
+            CurrentSale = new Sale() { Amount = 1, RegisterID = CurrentRegister.ID, ProductID = CurrentProduct.ID, SinglePrice = CurrentProduct.Price };
             CardReaderTimer.Start();
         }
 
@@ -272,7 +302,7 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
         {
             CardReaderTimer.Stop();
             CurrentCustomer = null;
-            CurrentSale = new Sale() { Amount = 1, RegisterID = CurrentRegister.ID, ProductID = CurrentProduct.ID };
+            CurrentSale = new Sale() { Amount = 1, RegisterID = CurrentRegister.ID, ProductID = CurrentProduct.ID, SinglePrice = CurrentProduct.Price };
             IsNewEnabled = false;
             IsFormEnabled = false;
         }

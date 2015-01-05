@@ -59,5 +59,44 @@ LEFT JOIN Product as p On (p.id = s.ProductID)";
                 SinglePrice = Double.Parse(record["Price"].ToString())
             };
         }
+
+        public static int SaveSale(Sale sale, IEnumerable<Claim> claims)
+        {
+            int rowsaffected = 0;
+            DbTransaction trans = null;
+
+            try
+            {
+                double TotalPrice = sale.SinglePrice * sale.Amount;
+                trans = Database.BeginTransaction(CreateConnectionString(claims));
+
+                string sql = "INSERT INTO Sale ([Timestamp], CustomerID, RegisterID, ProductID, Amount, TotalPrice) VALUES(GetDate(), @CID, @RID, @PID, @Amount, @TP)";
+                DbParameter par1 = Database.AddParameter("ConnectionString", "@CID", sale.CustomerID);
+                DbParameter par2 = Database.AddParameter("ConnectionString", "@RID", sale.RegisterID);
+                DbParameter par3 = Database.AddParameter("ConnectionString", "@PID", sale.ProductID);
+                DbParameter par4 = Database.AddParameter("ConnectionString", "@Amount", sale.Amount);
+                DbParameter par5 = Database.AddParameter("ConnectionString", "@TP", TotalPrice);
+                rowsaffected += Database.InsertData(trans, sql, par1, par2, par3, par4, par5);
+
+                sql = "UPDATE Customer SET Balance = Balance - @TP WHERE ID = @CID";
+                par1 = Database.AddParameter("ConnectionString", "@TP", TotalPrice);
+                par2 = Database.AddParameter("ConnectionString", "@CID", sale.CustomerID);
+                rowsaffected += Database.ModifyData(trans, sql, par1, par2);
+
+                trans.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (trans != null)
+                    trans.Rollback();
+            }
+            finally
+            {
+                if (trans != null)
+                    Database.ReleaseConnection(trans.Connection);
+            }
+
+            return rowsaffected;
+        }
     }
 }
