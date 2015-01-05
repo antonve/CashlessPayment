@@ -2,6 +2,7 @@
 using nmct.ba.cashlessproject.model;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -18,6 +19,21 @@ namespace nmct.ba.cashlessproject.api.Controllers
         {
             ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
             return CustomerDA.GetCustomers(p.Claims);
+        }
+
+        // POST: api/Customer/GetByName/:orgid
+        [AllowAnonymous]
+        [HttpPost]
+        public Customer GetByName(int org, [FromBody]string name)
+        {
+            ConnectionStringSettings cs = OrganisationDA.GetCSById(org);
+
+            if (cs == null)
+            {
+                return null;
+            }
+
+            return CustomerDA.GetCustomerByName(cs, name);
         }
 
         // PUT: api/Customer/5

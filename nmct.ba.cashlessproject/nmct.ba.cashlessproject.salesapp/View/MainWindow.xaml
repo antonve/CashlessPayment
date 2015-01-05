@@ -11,8 +11,8 @@
         <DataTemplate DataType="{x:Type vm:LoginVM}">
             <v:Login/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:StatisticsVM}">
-            <v:Statistics/>
+        <DataTemplate DataType="{x:Type vm:OrderVM}">
+            <v:Order/>
         </DataTemplate>
         <Style x:Key="ActiveButton" TargetType="Button">
             <Style.Triggers>

@@ -82,5 +82,27 @@ namespace nmct.ba.cashlessproject.api.Models
 
             return rowsaffected;
         }
+
+        public static Customer GetCustomerByName(ConnectionStringSettings cs, string name)
+        {
+            Customer result = null;
+            string sql = "SELECT ID, CustomerName, Balance FROM Customer WHERE CustomerName = @ID";
+            DbParameter par1 = Database.AddParameter("AdminDB", "@ID", name);
+            DbDataReader reader = Database.GetData(Database.GetConnection(cs), sql, par1);
+
+            while (reader.Read())
+            {
+                result = new Customer()
+                {
+                    ID = Int32.Parse(reader["ID"].ToString()),
+                    CustomerName = reader["CustomerName"].ToString(),
+                    Balance = Double.Parse(reader["Balance"].ToString())
+                };
+            }
+
+            reader.Close();
+
+            return result;
+        }
     }
 }

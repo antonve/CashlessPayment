@@ -15,7 +15,7 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
     {
         public ApplicationVM()
         {
-            Pages.Add(new LoginVM());
+            Pages.Add(new OrderVM());
             // Add other pages
 
             CurrentPage = Pages[0];
@@ -70,7 +70,7 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
         public void Login()
         {
             Pages.RemoveAt(0);
-            Pages.Add(new StatisticsVM());
+            Pages.Add(new OrderVM());
             CurrentPage = Pages[0];
             AppTitle = String.Format("Cashless Payment (logged in as {0})", auth.EmployeeName);
         }

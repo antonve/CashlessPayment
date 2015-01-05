@@ -18,9 +18,9 @@ namespace nmct.ba.cashlessproject.salesapp.View
     /// <summary>
     /// Interaction logic for Statistics.xaml
     /// </summary>
-    public partial class Statistics : UserControl
+    public partial class Order : UserControl
     {
-        public Statistics()
+        public Order()
         {
             InitializeComponent();
         }

@@ -2,6 +2,7 @@
 using nmct.ba.cashlessproject.model;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Common;
 using System.Linq;
 using System.Web;
@@ -67,7 +68,7 @@ namespace nmct.ba.cashlessproject.api.Models
         public static Organisation GetOrganisation(int id)
         {
             Organisation result = null;
-            string sql = "SELECT id, DbName, DbLogin, DbPassword, OrganisationName FROM Organisation WHERE ID = @ID";
+            string sql = "SELECT ID, DbName, DbLogin, DbPassword, OrganisationName FROM Organisation WHERE ID = @ID";
             DbParameter par1 = Database.AddParameter("AdminDB", "@ID", id);
             DbDataReader reader = Database.GetData(Database.GetConnection("AdminDB"), sql, par1);
 
@@ -86,6 +87,37 @@ namespace nmct.ba.cashlessproject.api.Models
             reader.Close();
 
             return result;
+        }
+
+        public static ConnectionStringSettings GetCSById(int id)
+        {
+            Organisation org = null;
+            string sql = "SELECT ID, DbName, DbLogin, DbPassword, OrganisationName FROM Organisation WHERE ID = @ID";
+            DbParameter par1 = Database.AddParameter("AdminDB", "@ID", id);
+            DbDataReader reader = Database.GetData(Database.GetConnection("AdminDB"), sql, par1);
+
+            while (reader.Read())
+            {
+                org = new Organisation()
+                {
+                    ID = Int32.Parse(reader["ID"].ToString()),
+                    DbName = reader["DbName"].ToString(),
+                    DbLogin = reader["DbLogin"].ToString(),
+                    DbPassword = reader["DbPassword"].ToString(),
+                    OrganisationName = reader["OrganisationName"].ToString()
+                };
+            }
+
+            reader.Close();
+
+            if (org == null)
+            {
+                return null;
+            }
+
+            ConnectionStringSettings cs = Database.CreateConnectionString("System.Data.SqlClient", @"IKORE\SQLEXPRESS", Cryptography.Decrypt(org.DbName), Cryptography.Decrypt(org.DbLogin), Cryptography.Decrypt(org.DbPassword));
+            
+            return cs;
         }
 
     }
