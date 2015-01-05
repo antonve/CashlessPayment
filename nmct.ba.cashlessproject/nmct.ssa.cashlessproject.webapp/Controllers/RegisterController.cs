@@ -70,41 +70,26 @@ namespace nmct.ssa.cashlessproject.webapp.fonts
 
             return View(org);
         }
+         */
 
         [HttpGet]
         public ActionResult Create()
         {
-            return View(new RegisterNewModel());
+            ViewBag.PossibleOrganisations = OrganisationDA.GetOrganisations();
+            return View(new OrganisationRegister());
         }
 
         [HttpPost]
-        public ActionResult Create(RegisterNewModel org)
+        public ActionResult Create(OrganisationRegister reg)
         {
-            Regex rgx = new Regex("[^a-z]");
-            string db = rgx.Replace(org.RegisterName.ToLower(), "") + (new Random()).Next(0, 9999).ToString();
-
             if (ModelState.IsValid)
             {
-                Register tempOrg = new Register()
-                {
-                    Login = org.Login,
-                    Password = org.Password,
-                    DbLogin = db,
-                    DbPassword = (new Regex("[^a-zA-Z0-9]")).Replace(Cryptography.Encrypt((new Random()).Next(999, 999999).ToString()), ""),
-                    DbName = db,
-                    RegisterName = org.RegisterName,
-                    Address = org.Address,
-                    Email = org.Email,
-                    Phone = org.Phone
-                };
+                int id = RegisterDA.Save(reg);
 
-                int id = RegisterDA.Save(tempOrg);
-
-                return RedirectToAction("Details", new { id = id });
+                return RedirectToAction("Index");
             }
 
-            return View(org);
+            return View(reg);
         }
-         */
     }
 }

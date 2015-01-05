@@ -167,6 +167,7 @@
     <Content Include="Views\Organisation\Edit.cshtml" />
     <Content Include="Views\Organisation\Create.cshtml" />
     <Content Include="Views\Register\Index.cshtml" />
+    <Content Include="Views\Register\Create.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
