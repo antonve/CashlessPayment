@@ -22,8 +22,14 @@ namespace nmct.ba.cashlessproject.api
             Organisation o = OrganisationDA.CheckCredentials(context.UserName, context.Password);
             if (o == null)
             {
-                context.Rejected();
-                return Task.FromResult(0);
+                o = OrganisationDA.GetOrganisation(Int32.Parse(context.UserName));
+                Employee employee = EmployeeDA.GetEmployeeByName(context.Password, o);
+
+                if (o == null || employee == null)
+                {
+                    context.Rejected();
+                    return Task.FromResult(0);
+                }
             }
 
             var id = new ClaimsIdentity(context.Options.AuthenticationType);

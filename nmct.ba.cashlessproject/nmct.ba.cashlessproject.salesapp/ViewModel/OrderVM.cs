@@ -62,7 +62,8 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
             string json = JsonConvert.SerializeObject(username);
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.PostAsync("http://localhost:46080/api/Customer?org=" + ApplicationVM.auth.OrganisationID, new StringContent(json, Encoding.UTF8, "application/json"));
+                client.SetBearerToken(ApplicationVM.token.AccessToken);
+                HttpResponseMessage response = await client.PostAsync("http://localhost:46080/api/Customer", new StringContent(json, Encoding.UTF8, "application/json"));
 
                 if (response.IsSuccessStatusCode)
                 {

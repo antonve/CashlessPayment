@@ -21,19 +21,12 @@ namespace nmct.ba.cashlessproject.api.Controllers
             return CustomerDA.GetCustomers(p.Claims);
         }
 
-        // POST: api/Customer/GetByName/:orgid
-        [AllowAnonymous]
+        // POST: api/Customers
         [HttpPost]
-        public Customer GetByName(int org, [FromBody]string name)
+        public Customer GetByName([FromBody]string name)
         {
-            ConnectionStringSettings cs = OrganisationDA.GetCSById(org);
-
-            if (cs == null)
-            {
-                return null;
-            }
-
-            return CustomerDA.GetCustomerByName(cs, name);
+            ClaimsPrincipal p = RequestContext.Principal as ClaimsPrincipal;
+            return CustomerDA.GetCustomerByName(p.Claims, name);
         }
 
         // PUT: api/Customer/5

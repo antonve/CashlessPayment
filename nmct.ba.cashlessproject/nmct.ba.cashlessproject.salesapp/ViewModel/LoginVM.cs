@@ -138,6 +138,7 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
                     if (result.Authorized == true)
                     {
                         ApplicationVM.auth = result;
+                        ApplicationVM.token = GetToken(result.OrganisationID, result.EmployeeName);
                         appvm.Login();
                     }
                     else
@@ -149,10 +150,10 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
             }
         }
 
-        private TokenResponse GetToken(string password)
+        private TokenResponse GetToken(int id, string name)
         {
             OAuth2Client client = new OAuth2Client(new Uri("http://localhost:46080/token"));
-            return client.RequestResourceOwnerPasswordAsync(Username, password).Result;
+            return client.RequestResourceOwnerPasswordAsync(id.ToString(), name).Result;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
     {
         public ApplicationVM()
         {
-            Pages.Add(new OrderVM());
+            Pages.Add(new LoginVM());
             // Add other pages
 
             CurrentPage = Pages[0];
@@ -65,6 +65,7 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
         }
 
         // AUTHENTICATION
+        public static TokenResponse token = null;
         public static SalesAuth auth = null;
 
         public void Login()
@@ -72,7 +73,7 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
             Pages.RemoveAt(0);
             Pages.Add(new OrderVM());
             CurrentPage = Pages[0];
-            AppTitle = String.Format("Cashless Payment (logged in as {0})", auth.EmployeeName);
+            AppTitle = String.Format("Cashless Payment Register (logged in as {0})", auth.EmployeeName);
         }
 
         public void Logout()
@@ -83,13 +84,13 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
             }
 
             Pages.Add(new LoginVM());
-            AppTitle = "Cashless Payment";
+            AppTitle = "Cashless Payment Register";
             CurrentPage = Pages[0];
             auth = null;
         }
 
         // ETC
-        private string _appTitle = "Cashless Payment";
+        private string _appTitle = "Cashless Payment Register";
 
         public string AppTitle
         {

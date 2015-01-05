@@ -83,12 +83,12 @@ namespace nmct.ba.cashlessproject.api.Models
             return rowsaffected;
         }
 
-        public static Customer GetCustomerByName(ConnectionStringSettings cs, string name)
+        public static Customer GetCustomerByName(IEnumerable<Claim> claims, string name)
         {
             Customer result = null;
             string sql = "SELECT ID, CustomerName, Balance FROM Customer WHERE CustomerName = @ID";
             DbParameter par1 = Database.AddParameter("AdminDB", "@ID", name);
-            DbDataReader reader = Database.GetData(Database.GetConnection(cs), sql, par1);
+            DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql, par1);
 
             while (reader.Read())
             {
