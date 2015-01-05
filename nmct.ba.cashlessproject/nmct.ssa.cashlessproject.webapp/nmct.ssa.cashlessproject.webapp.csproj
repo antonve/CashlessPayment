@@ -112,7 +112,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\OrganisationController.cs" />
+    <Compile Include="DataAccess\RegisterDA.cs" />
     <Compile Include="DataAccess\OrganisationDA.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -164,6 +166,7 @@
     <Content Include="Views\Organisation\Details.cshtml" />
     <Content Include="Views\Organisation\Edit.cshtml" />
     <Content Include="Views\Organisation\Create.cshtml" />
+    <Content Include="Views\Register\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

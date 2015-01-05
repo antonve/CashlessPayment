@@ -11,52 +11,51 @@ using System.Web.Hosting;
 
 namespace nmct.ssa.cashlessproject.webapp.DataAccess
 {
-    public class OrganisationDA
+    public class RegisterDA
     {
         const string cs = "AdminDB";
 
-        public static List<Organisation> GetOrganisations()
+        public static List<OrganisationRegister> GetRegisters()
         {
-            List<Organisation> results = new List<Organisation>();
-            string sql = "SELECT ID, Login, DbName, DbLogin, OrganisationName, Address, Email, Phone FROM Organisation";
+            Dictionary<int, Organisation> orgs = OrganisationDA.GetOrganisationsDict();
+            List<OrganisationRegister> results = new List<OrganisationRegister>();
+            string sql = "SELECT ID, RegisterName, Device, OrganisationID, ExternalID FROM Register";
             DbDataReader reader = Database.GetData(Database.GetConnection(cs), sql);
 
             while (reader.Read())
             {
-                Organisation org = CreateOrganisation(reader);
-                results.Add(org);
+                OrganisationRegister reg = CreateRegister(reader);
+                reg.Organisation = orgs[reg.OrganisationID];
+                results.Add(reg);
             }
             reader.Close();
-
+            
             return results;
         }
 
-        public static Dictionary<int, Organisation> GetOrganisationsDict()
+        private static OrganisationRegister CreateRegister(IDataReader reader)
         {
-            Dictionary<int, Organisation> results = new Dictionary<int, Organisation>();
-            string sql = "SELECT ID, Login, DbName, DbLogin, OrganisationName, Address, Email, Phone FROM Organisation";
-            DbDataReader reader = Database.GetData(Database.GetConnection(cs), sql);
-
-            while (reader.Read())
+            return new OrganisationRegister()
             {
-                Organisation org = CreateOrganisation(reader);
-                results.Add(org.ID, org);
-            }
-            reader.Close();
-
-            return results;
+                ID = Convert.ToInt32(reader["ID"].ToString()),
+                RegisterName = reader["RegisterName"].ToString(),
+                Device = reader["Device"].ToString(),
+                OrganisationID = Convert.ToInt32(reader["OrganisationID"].ToString()),
+                ExternalID = Convert.ToInt32(reader["ExternalID"].ToString()),
+            };
         }
 
-        public static Organisation GetOrganisation(int id)
+        /*
+        public static Register GetRegister(int id)
         {
-            string sql = "SELECT ID, Login, DbName, DbLogin, OrganisationName, Address, Email, Phone FROM Organisation WHERE ID = @ID";
+            string sql = "SELECT ID, Login, DbName, DbLogin, RegisterName, Address, Email, Phone FROM Register WHERE ID = @ID";
 
             DbParameter par1 = Database.AddParameter(cs, "@ID", id);
             DbDataReader reader = Database.GetData(Database.GetConnection(cs), sql, par1);
 
             while (reader.Read())
             {
-                return CreateOrganisation(reader);
+                return CreateRegister(reader);
             }
 
             reader.Close();
@@ -64,22 +63,7 @@ namespace nmct.ssa.cashlessproject.webapp.DataAccess
             return null;
         }
 
-        private static Organisation CreateOrganisation(IDataReader reader)
-        {
-            return new Organisation()
-            {
-                ID = Convert.ToInt32(reader["ID"].ToString()),
-                Login = Cryptography.Decrypt(reader["Login"].ToString()),
-                DbName = Cryptography.Decrypt(reader["DbName"].ToString()),
-                DbLogin = Cryptography.Decrypt(reader["DbLogin"].ToString()),
-                OrganisationName = reader["OrganisationName"].ToString(),
-                Address = reader["Address"].ToString(),
-                Email = reader["Email"].ToString(),
-                Phone = reader["Phone"].ToString()
-            };
-        }
-
-        public static int Save(Organisation org)
+        public static int Save(Register org)
         {
             int rowsaffected = 0;
             DbTransaction trans = null;
@@ -91,11 +75,11 @@ namespace nmct.ssa.cashlessproject.webapp.DataAccess
                 if (org.ID == 0)
                 {
                     string sql = 
-@"INSERT INTO Organisation 
-(OrganisationName, Address, Email, Phone, Login, Password, DbName, DbLogin, DbPassword)
+@"INSERT INTO Register 
+(RegisterName, Address, Email, Phone, Login, Password, DbName, DbLogin, DbPassword)
 VALUES (@Org, @Address, @Email, @Phone, @Login, @Password, @DbName, @DbLogin, @DbPassword)";
 
-                    DbParameter par1 = Database.AddParameter(cs, "@Org", org.OrganisationName);
+                    DbParameter par1 = Database.AddParameter(cs, "@Org", org.RegisterName);
                     DbParameter par2 = Database.AddParameter(cs, "@Address", org.Address);
                     DbParameter par3 = Database.AddParameter(cs, "@Email", org.Email);
                     DbParameter par4 = Database.AddParameter(cs, "@Phone", org.Phone);
@@ -112,7 +96,7 @@ VALUES (@Org, @Address, @Email, @Phone, @Login, @Password, @DbName, @DbLogin, @D
                 else
                 {
                     DbParameter parPass = null;
-                    string sql = "UPDATE Organisation SET Login = @Login, OrganisationName = @Org, Address = @Address, Email = @Email, Phone = @Phone";
+                    string sql = "UPDATE Register SET Login = @Login, RegisterName = @Org, Address = @Address, Email = @Email, Phone = @Phone";
                     
                     if (org.Password != null)
                     {
@@ -124,7 +108,7 @@ VALUES (@Org, @Address, @Email, @Phone, @Login, @Password, @DbName, @DbLogin, @D
 
                     DbParameter par1 = Database.AddParameter(cs, "@ID", org.ID);
                     DbParameter par2 = Database.AddParameter(cs, "@Login", Cryptography.Encrypt(org.Login));
-                    DbParameter par3 = Database.AddParameter(cs, "@Org", org.OrganisationName);
+                    DbParameter par3 = Database.AddParameter(cs, "@Org", org.RegisterName);
                     DbParameter par4 = Database.AddParameter(cs, "@Address", org.Address);
                     DbParameter par5 = Database.AddParameter(cs, "@Email", org.Email);
                     DbParameter par6 = Database.AddParameter(cs, "@Phone", org.Phone);
@@ -148,7 +132,7 @@ VALUES (@Org, @Address, @Email, @Phone, @Login, @Password, @DbName, @DbLogin, @D
         }
 
 
-        private static void CreateDatabase(Organisation o)
+        private static void CreateDatabase(Register o)
         {
             // create the actual database
             string create = File.ReadAllText(HostingEnvironment.MapPath(@"~/App_Data/create.txt"));
@@ -195,6 +179,6 @@ VALUES (@Org, @Address, @Email, @Phone, @Login, @Password, @DbName, @DbLogin, @D
             string[] splitter = new string[] { "\r\nGO\r\n" };
             string[] commandTexts = input.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
             return commandTexts;
-        }
+        }*/
     }
 }

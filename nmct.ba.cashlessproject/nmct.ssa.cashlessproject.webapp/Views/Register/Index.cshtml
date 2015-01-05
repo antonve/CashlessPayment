@@ -1,0 +1,43 @@
+﻿@model IEnumerable<nmct.ba.cashlessproject.model.OrganisationRegister>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RegisterName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Device)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Organisation)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegisterName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Device)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Organisation.OrganisationName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>
