@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using nmct.ba.cashlessproject.model;
 
-namespace nmct.ba.cashlessproject.salesapp.ViewModel
+namespace nmct.ba.cashlessproject.registerapp.ViewModel
 {
     class LoginVM : ObservableObject, IPage
     {
@@ -117,43 +117,21 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
             }
         }
 
-        private async void Login()
+        private void Login()
         {
             ApplicationVM appvm = App.Current.MainWindow.DataContext as ApplicationVM;
-            string json = JsonConvert.SerializeObject(new SalesAuth() {
-                OrganisationID = CurrentOrganisation.ID,
-                OrganisationName = CurrentOrganisation.OrganisationName,
-                EmployeeName = Username
-            });
+            ApplicationVM.token = GetToken(CurrentOrganisation.ID, Username);
 
-            using (HttpClient Organisation = new HttpClient())
+            if (ApplicationVM.token != null)
             {
-                HttpResponseMessage response = await Organisation.PostAsync("http://localhost:46080/api/Organisation/AuthSales", new StringContent(json, Encoding.UTF8, "application/json"));
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string jsonresponse = await response.Content.ReadAsStringAsync();
-                    SalesAuth result = JsonConvert.DeserializeObject<SalesAuth>(jsonresponse);
-
-                    if (result.Authorized == true)
-                    {
-                        ApplicationVM.auth = result;
-                        ApplicationVM.token = GetToken(result.OrganisationID, result.EmployeeName);
-                        appvm.Login();
-                    }
-                    else
-                    {
-                        CardReaderTimer.Start();
-                        Error = "No employee '" + result.EmployeeName + "' was found for organisation '" + result.OrganisationName + "'.";
-                    }
-                }
+                appvm.Login(Username);
             }
         }
 
         private TokenResponse GetToken(int id, string name)
         {
             OAuth2Client client = new OAuth2Client(new Uri("http://localhost:46080/token"));
-            return client.RequestResourceOwnerPasswordAsync("s" + id.ToString(), name).Result;
+            return client.RequestResourceOwnerPasswordAsync("r" + id.ToString(), name).Result;
         }
     }
 }

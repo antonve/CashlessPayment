@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nmct.ssa.cashlessproject.we
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nmct.ba.cashlessproject.salesapp", "nmct.ba.cashlessproject.salesapp\nmct.ba.cashlessproject.salesapp.csproj", "{5CBEA154-B93B-4757-9D54-D17C0AEB5663}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nmct.ba.cashlessproject.registerapp", "nmct.ba.cashlessproject.registerapp\nmct.ba.cashlessproject.registerapp.csproj", "{027B2B78-5339-48AB-86AE-C8BAEEA321C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,16 @@ Global
 		{5CBEA154-B93B-4757-9D54-D17C0AEB5663}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5CBEA154-B93B-4757-9D54-D17C0AEB5663}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5CBEA154-B93B-4757-9D54-D17C0AEB5663}.Release|x86.ActiveCfg = Release|Any CPU
+		{027B2B78-5339-48AB-86AE-C8BAEEA321C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{027B2B78-5339-48AB-86AE-C8BAEEA321C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{027B2B78-5339-48AB-86AE-C8BAEEA321C6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{027B2B78-5339-48AB-86AE-C8BAEEA321C6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{027B2B78-5339-48AB-86AE-C8BAEEA321C6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{027B2B78-5339-48AB-86AE-C8BAEEA321C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{027B2B78-5339-48AB-86AE-C8BAEEA321C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{027B2B78-5339-48AB-86AE-C8BAEEA321C6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{027B2B78-5339-48AB-86AE-C8BAEEA321C6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{027B2B78-5339-48AB-86AE-C8BAEEA321C6}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

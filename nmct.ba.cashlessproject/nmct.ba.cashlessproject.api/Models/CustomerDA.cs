@@ -105,5 +105,26 @@ namespace nmct.ba.cashlessproject.api.Models
 
             return result;
         }
+
+        public static Customer GetCustomerByName(string name, Organisation org)
+        {
+            Customer result = null;
+            ConnectionStringSettings cs = Database.CreateConnectionString("System.Data.SqlClient", @"IKORE\SQLEXPRESS", Cryptography.Decrypt(org.DbName), Cryptography.Decrypt(org.DbLogin), Cryptography.Decrypt(org.DbPassword));
+            string sql = "SELECT ID, CustomerName, Balance, Address FROM Customer WHERE CustomerName = @Name";
+            DbParameter par1 = Database.AddParameter("AdminDB", "@Name", name);
+            DbDataReader reader = Database.GetData(Database.GetConnection(cs), sql, par1);
+
+            while (reader.Read())
+            {
+                result = new Customer()
+                {
+                    ID = Int32.Parse(reader["ID"].ToString())
+                };
+            }
+
+            reader.Close();
+
+            return result;
+        }
     }
 }

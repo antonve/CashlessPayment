@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="nmct.ba.cashlessproject.registerapp.View.Manage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:nmct.ba.cashlessproject.registerapp.ViewModel"
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:c="clr-namespace:nmct.ba.cashlessproject.registerapp.View.converters"
+             mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vm:ManageVM />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <c:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Style x:Key="IsSubmitEnabled" TargetType="FrameworkElement" BasedOn="{StaticResource DefaultMargin}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsFormEnabled}" Value="True" />
+                        <Condition Binding="{Binding Error}" Value="false" />
+                        <Condition Binding="{Binding ElementName=txbPrice, Path=(Validation.HasError)}" Value="false" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="IsEnabled" Value="True" />
+                </MultiDataTrigger>
+                
+            </Style.Triggers>
+            <Setter Property="IsEnabled" Value="False" />
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="140" />
+                <RowDefinition Height="200" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <GroupBox Grid.Row="0" Header="Customer">
+                <StackPanel>
+                    <TextBlock Text="{Binding CustomerLabel }" />
+                    <TextBlock Text="{Binding CurrentCustomer.Balance, StringFormat='Balance: {0}' }" />
+                    <TextBlock Text="{Binding CurrentCustomer.Address, StringFormat='Address: {0}' }" />
+                    <TextBlock Text="The order costs more than the available balance." Foreground="Red" Visibility="{ Binding Error, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Grid.Row="1" Header="Order">
+                <StackPanel>
+                    <TextBlock>Amount</TextBlock>
+                    <ComboBox SelectedItem="{Binding CurrentProduct}" />
+                    <Button Command="{Binding SaveOrderCommand}">
+                        Add
+                    </Button>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</UserControl>

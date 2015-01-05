@@ -303,7 +303,7 @@ namespace nmct.ba.cashlessproject.salesapp.ViewModel
             CardReaderTimer.Stop();
             CurrentCustomer = null;
             CurrentSale = new Sale() { Amount = 1, RegisterID = CurrentRegister.ID, ProductID = CurrentProduct.ID, SinglePrice = CurrentProduct.Price };
-            IsNewEnabled = false;
+            IsNewEnabled = true;
             IsFormEnabled = false;
         }
 

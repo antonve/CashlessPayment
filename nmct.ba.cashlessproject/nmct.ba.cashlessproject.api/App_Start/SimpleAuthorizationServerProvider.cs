@@ -19,17 +19,41 @@ namespace nmct.ba.cashlessproject.api
 
         public override Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            Organisation o = OrganisationDA.CheckCredentials(context.UserName, context.Password);
-            if (o == null)
-            {
-                o = OrganisationDA.GetOrganisation(Int32.Parse(context.UserName));
-                Employee employee = EmployeeDA.GetEmployeeByName(context.Password, o);
+            string mode = context.UserName.Substring(0, 1);
+            Organisation o = null;
+            bool fail = true;
+            string username = context.UserName.Substring(1);
 
-                if (o == null || employee == null)
-                {
-                    context.Rejected();
-                    return Task.FromResult(0);
-                }
+            switch (mode)
+            {
+                case "m":
+                    o = OrganisationDA.CheckCredentials(username, context.Password);
+                    if (o != null)
+                    {
+                        fail = false;
+                    }
+                    break;
+                case "s":
+                    o = OrganisationDA.GetOrganisation(Int32.Parse(username));
+                    Employee employee = EmployeeDA.GetEmployeeByName(context.Password, o);
+                    if (o != null && employee != null)
+                    {
+                        fail = false;
+                    }
+                    break;
+                case "r":
+                    o = OrganisationDA.GetOrganisation(Int32.Parse(username));
+                    Customer customer = CustomerDA.GetCustomerByName(context.Password, o);
+                    if (o != null && customer != null)
+                    {
+                        fail = false;
+                    }
+                    break;
+            }
+            if (fail)
+            {
+                context.Rejected();
+                return Task.FromResult(0);
             }
 
             var id = new ClaimsIdentity(context.Options.AuthenticationType);
