@@ -8,7 +8,6 @@
         <Style x:Key="DefaultMargin" TargetType="FrameworkElement">
             <Setter Property="Margin" Value="{StaticResource CommonMargin}" />
         </Style>
-
         <Style TargetType="TextBox" BasedOn="{StaticResource DefaultMargin}">
             <Setter Property="Padding" Value="5" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -20,9 +19,12 @@
         <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultMargin}">
         </Style>
         <Style TargetType="Button" BasedOn="{StaticResource DefaultMargin}">
-            <Setter Property="Padding" Value="15 0" />
+            <Setter Property="Padding" Value="15, 0" />
         </Style>
-        <Style TargetType="ListBox" BasedOn="{StaticResource DefaultMargin}">
+        <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultMargin}">
+        </Style>
+        <Style TargetType="GroupBox" BasedOn="{StaticResource DefaultMargin}">
+            <Setter Property="Margin" Value="5,0,5,5" />
         </Style>
     </Application.Resources>
 </Application>

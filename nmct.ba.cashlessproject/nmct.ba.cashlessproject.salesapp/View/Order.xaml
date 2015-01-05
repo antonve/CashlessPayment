@@ -6,13 +6,83 @@
              xmlns:vm="clr-namespace:nmct.ba.cashlessproject.salesapp.ViewModel"
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:c="clr-namespace:nmct.ba.cashlessproject.salesapp.View.converters"
              mc:Ignorable="d">
     <UserControl.DataContext>
         <vm:OrderVM />
     </UserControl.DataContext>
     <UserControl.Resources>
+        <c:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Style x:Key="IsSubmitEnabled" TargetType="FrameworkElement" BasedOn="{StaticResource DefaultMargin}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsFormEnabled}" Value="True" />
+                        <Condition Binding="{Binding Error}" Value="false" />
+                        <Condition Binding="{Binding ElementName=txbPrice, Path=(Validation.HasError)}" Value="false" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="IsEnabled" Value="True" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+            <Setter Property="IsEnabled" Value="False" />
+        </Style>
     </UserControl.Resources>
-    <GroupBox Header="Customer">
-        <TextBlock Text="{Binding CustomerLabel }" />
-    </GroupBox>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="140" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <ComboBox Grid.Row="0" ItemsSource="{Binding Registers}" SelectedItem="{Binding CurrentRegister}" />
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Content="New" IsEnabled="{Binding IsNewEnabled}" Command="{Binding NewCommand }" />
+                <Button Grid.Column="1" Content="Cancel" IsEnabled="{Binding IsCancelEnabled}" Command="{Binding CancelCommand }" />
+            </Grid>
+            
+            <GroupBox Grid.Row="2" Header="Customer">
+                <StackPanel>
+                    <TextBlock Text="{Binding CustomerLabel, StringFormat='Name: {0}' }" />
+                    <TextBlock Text="{Binding CurrentCustomer.Balance, StringFormat='Balance: {0}' }" />
+                    <TextBlock Text="{Binding CurrentCustomer.Address, StringFormat='Address: {0}' }" />
+                    <TextBlock Text="The order costs more than the available balance." Foreground="Red" Visibility="{ Binding Error, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+
+        <GroupBox Grid.Column="1" Header="Order">
+            <StackPanel IsEnabled="{Binding IsFormEnabled}">
+                <TextBlock>Product</TextBlock>
+                <ComboBox ItemsSource="{Binding Products}" SelectedItem="{Binding CurrentProduct}" />
+                <TextBlock>Amount</TextBlock>
+                <TextBox x:Name="txbPrice" Text="{Binding CurrentSale.Amount, ValidatesOnDataErrors=True}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="LostFocus">
+                            <i:InvokeCommandAction Command="{Binding CheckForErrorCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBox>
+                <Button 
+                    Grid.Column="0" 
+                    Style="{StaticResource IsSubmitEnabled}"
+                    Command="{Binding SaveProductCommand}">
+                    Save
+                </Button>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
 </UserControl>

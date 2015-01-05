@@ -86,7 +86,7 @@ namespace nmct.ba.cashlessproject.api.Models
         public static Customer GetCustomerByName(IEnumerable<Claim> claims, string name)
         {
             Customer result = null;
-            string sql = "SELECT ID, CustomerName, Balance FROM Customer WHERE CustomerName = @ID";
+            string sql = "SELECT ID, CustomerName, Balance, Address FROM Customer WHERE CustomerName = @ID";
             DbParameter par1 = Database.AddParameter("AdminDB", "@ID", name);
             DbDataReader reader = Database.GetData(Database.GetConnection(CreateConnectionString(claims)), sql, par1);
 
@@ -96,6 +96,7 @@ namespace nmct.ba.cashlessproject.api.Models
                 {
                     ID = Int32.Parse(reader["ID"].ToString()),
                     CustomerName = reader["CustomerName"].ToString(),
+                    Address = reader["Address"].ToString(),
                     Balance = Double.Parse(reader["Balance"].ToString())
                 };
             }

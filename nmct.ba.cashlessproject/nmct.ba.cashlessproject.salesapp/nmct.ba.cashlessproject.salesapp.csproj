@@ -95,6 +95,7 @@
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="ViewModel\ObservableObject.cs" />
     <Compile Include="ViewModel\OrderVM.cs" />
+    <Compile Include="View\converters\BoolToVisibilityConverter.cs" />
     <Compile Include="View\converters\NullToVisibilityConverter.cs" />
     <Compile Include="View\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
