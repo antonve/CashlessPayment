@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using nmct.ssa.cashlessproject.webapp.PresentationModels;
 
 namespace nmct.ssa.cashlessproject.webapp.fonts
 {
@@ -75,21 +76,37 @@ namespace nmct.ssa.cashlessproject.webapp.fonts
         [HttpGet]
         public ActionResult Create()
         {
-            ViewBag.PossibleOrganisations = OrganisationDA.GetOrganisations();
-            return View(new OrganisationRegister());
+            List<SelectListItem> items = GetOrganisations();
+
+            return View(new PMOrganisationRegister() { Organisations = items });
         }
 
         [HttpPost]
-        public ActionResult Create(OrganisationRegister reg)
+        public ActionResult Create(PMOrganisationRegister reg)
         {
+            reg.Organisations = GetOrganisations();
+
             if (ModelState.IsValid)
             {
-                int id = RegisterDA.Save(reg);
+                reg.DataOrganisationRegister.Organisation = OrganisationDA.GetOrganisation(reg.DataOrganisationRegister.OrganisationID);
+                int id = RegisterDA.Save(reg.DataOrganisationRegister);
 
                 return RedirectToAction("Index");
             }
 
             return View(reg);
+        }
+
+        private List<SelectListItem> GetOrganisations()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            foreach (Organisation org in OrganisationDA.GetOrganisations())
+            {
+                items.Add(new SelectListItem() { Value = org.ID.ToString(), Text = org.OrganisationName });
+            }
+
+            return items;
         }
     }
 }

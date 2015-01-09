@@ -123,6 +123,7 @@
     <Compile Include="helper\Database.cs" />
     <Compile Include="Models\OrganisationNewModel.cs" />
     <Compile Include="Models\OrganisationEditModel.cs" />
+    <Compile Include="PresentationModels\PMOrganisationRegister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

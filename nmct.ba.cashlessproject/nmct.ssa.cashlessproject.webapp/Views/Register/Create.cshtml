@@ -1,4 +1,4 @@
-﻿@model nmct.ba.cashlessproject.model.OrganisationRegister
+﻿@model nmct.ssa.cashlessproject.webapp.PresentationModels.PMOrganisationRegister
 
 @{
     ViewBag.Title = "Create";
@@ -16,18 +16,26 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.RegisterName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.DataOrganisationRegister.RegisterName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RegisterName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RegisterName, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.DataOrganisationRegister.RegisterName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DataOrganisationRegister.RegisterName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Device, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.DataOrganisationRegister.Device, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Device, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Device, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.DataOrganisationRegister.Device, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DataOrganisationRegister.Device, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DataOrganisationRegister.OrganisationID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.DataOrganisationRegister.OrganisationID, Model.Organisations, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DataOrganisationRegister.OrganisationID, "", new { @class = "text-danger" })
             </div>
         </div>
 

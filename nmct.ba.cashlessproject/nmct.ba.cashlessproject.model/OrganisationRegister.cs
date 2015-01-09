@@ -12,10 +12,13 @@ namespace nmct.ba.cashlessproject.model
     {
         public int ID { get; set; }
 
+        [Required]
         public string RegisterName { get; set; }
 
+        [Required]
         public string Device { get; set; }
 
+        [Required]
         public int OrganisationID { get; set; }
 
         public int ExternalID { get; set; }

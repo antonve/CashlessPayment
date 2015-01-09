@@ -56,11 +56,24 @@ namespace nmct.ssa.cashlessproject.webapp.DataAccess
 
                 if (reg.ID == 0)
                 {
-                    string sql =
+                    trans.Connection.ChangeDatabase(reg.Organisation.DbName);
+                    string sql = @"INSERT INTO Register 
+(RegisterName, Device)
+VALUES (@name, @dev)";
+                    DbParameter par1 = Database.AddParameter(cs, "@name", reg.RegisterName);
+                    DbParameter par2 = Database.AddParameter(cs, "@dev", reg.Device);
+                    reg.ExternalID = Database.InsertData(trans, sql, par1, par2);
+
+                    trans.Connection.ChangeDatabase("CashlessAdmin");
+
+                    sql =
 @"INSERT INTO Register 
 (RegisterName, Device, OrganisationID, ExternalID)
 VALUES (@name, @dev, @orgid, @extid)";
 
+                    DbParameter par3 = Database.AddParameter(cs, "@orgid", reg.OrganisationID);
+                    DbParameter par4 = Database.AddParameter(cs, "@extid", reg.ExternalID);
+                    rowsaffected += Database.ModifyData(trans, sql, par1, par2, par3, par4) + reg.ExternalID;
 
                     reg.ID = rowsaffected;
                 }
@@ -91,73 +104,5 @@ VALUES (@name, @dev, @orgid, @extid)";
 
             return rowsaffected;
         }
-        /*
-        public static Register GetRegister(int id)
-        {
-            string sql = "SELECT ID, Login, DbName, DbLogin, RegisterName, Address, Email, Phone FROM Register WHERE ID = @ID";
-
-            DbParameter par1 = Database.AddParameter(cs, "@ID", id);
-            DbDataReader reader = Database.GetData(Database.GetConnection(cs), sql, par1);
-
-            while (reader.Read())
-            {
-                return CreateRegister(reader);
-            }
-
-            reader.Close();
-
-            return null;
-        }
-
-
-
-        private static void CreateDatabase(Register o)
-        {
-            // create the actual database
-            string create = File.ReadAllText(HostingEnvironment.MapPath(@"~/App_Data/create.txt"));
-            string sql = create.Replace("@@DbName", o.DbName).Replace("@@DbLogin", o.DbLogin).Replace("@@DbPassword", o.DbPassword);
-            foreach (string commandText in RemoveGo(sql))
-            {
-                try
-                {
-                    int res = Database.ModifyData(Database.GetConnection("AdminDB"), commandText);
-                    Console.WriteLine(res.ToString());
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-
-            // create login, user and tables
-            DbTransaction trans = null;
-            try
-            {
-                trans = Database.BeginTransaction("AdminDB");
-
-                string fill = File.ReadAllText(HostingEnvironment.MapPath(@"~/App_Data/fill.txt"));
-                string sql2 = fill.Replace("@@DbName", o.DbName).Replace("@@DbLogin", o.DbLogin).Replace("@@DbPassword", o.DbPassword);
-
-                foreach (string commandText in RemoveGo(sql2))
-                {
-                    Database.ModifyData(trans, commandText);
-                }
-
-                trans.Commit();
-            }
-            catch (Exception ex)
-            {
-                trans.Rollback();
-                Console.WriteLine(ex.Message);
-            }
-        }
-
-        private static string[] RemoveGo(string input)
-        {
-            //split the script on "GO" commands
-            string[] splitter = new string[] { "\r\nGO\r\n" };
-            string[] commandTexts = input.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-            return commandTexts;
-        }*/
     }
 }
